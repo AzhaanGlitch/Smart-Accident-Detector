@@ -48,6 +48,9 @@ document.addEventListener('DOMContentLoaded', () => {
         callback: (response) => {
           console.log("Google login response:", response);
           if (response && response.code) {
+            // Store a placeholder Google name (replace later with real fetch)
+            localStorage.setItem('googleName', 'Google User');
+
             googleBtn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span> Redirecting...`;
             googleBtn.disabled = true;
             setTimeout(() => {
@@ -146,11 +149,17 @@ document.addEventListener('DOMContentLoaded', () => {
   const saveNameBtn = document.getElementById('saveNameBtn');
   const userNameInput = document.getElementById('userNameInput');
 
+  // Try to get Google name if available
+  const googleName = localStorage.getItem('googleName');
+
   function checkUserName() {
     const savedName = localStorage.getItem('userName');
     if (savedName) {
       userGreeting.textContent = `Hi ${savedName}`;
     } else if (nameModal) {
+      if (googleName) {
+        userNameInput.value = googleName; // Pre-fill with Google name
+      }
       nameModal.show();
     }
   }
