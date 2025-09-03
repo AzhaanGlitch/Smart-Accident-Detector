@@ -41,10 +41,10 @@ document.addEventListener('DOMContentLoaded', () => {
   if (googleBtn) {
     googleBtn.addEventListener('click', function () {
       const codeClient = google.accounts.oauth2.initCodeClient({
-        client_id: '860294680521-b9vqb70omgjbanptmq56nvo4jb81kvb7.apps.googleusercontent.com', // ✅ new ID
+        client_id: '860294680521-pbqoefl46mkc5i17l2potqjaccdveatr.apps.googleusercontent.com', // ✅ your new Client ID
         scope: 'openid email profile',
         ux_mode: 'popup',
-        redirect_uri: 'http://127.0.0.1:3000/login.html', // ✅ must match Console
+        redirect_uri: 'https://smart-accident-detector.vercel.app/index.html', // ✅ must match in Google Cloud Console
         callback: (response) => {
           console.log("Google login response:", response);
 
@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             setTimeout(() => {
               window.location.href = "base.html";
-            }, 2000); // wait 2 seconds
+            }, 2000);
           } else {
             console.error("Google login failed: No code received");
           }
