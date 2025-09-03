@@ -1,22 +1,21 @@
 // /api/github/callback.js
 export default async function handler(req, res) {
   try {
-    const baseUrl = process.env.BASE_URL || `https://${req.headers.host}`;
+    const baseUrl = process.env.BASE_URL || "http://localhost:3000";
     const clientId = process.env.GITHUB_CLIENT_ID;
     const clientSecret = process.env.GITHUB_CLIENT_SECRET;
     const redirectUri = `${baseUrl}/api/github/callback`;
 
     const { code, state } = req.query || {};
 
-    // read cookie (gh_oauth_state)
+    // Verify state cookie
     const cookies = parseCookies(req.headers.cookie || "");
     const savedState = cookies["gh_oauth_state"];
-
     if (!code || !state || state !== savedState) {
       return res.status(400).send("Invalid state or code");
     }
 
-    // Exchange code for access token
+    // Exchange code for token
     const tokenResp = await fetch("https://github.com/login/oauth/access_token", {
       method: "POST",
       headers: {
@@ -37,7 +36,7 @@ export default async function handler(req, res) {
       return res.status(400).send("Failed to obtain access token");
     }
 
-    // Get user profile
+    // Fetch user profile
     const userResp = await fetch("https://api.github.com/user", {
       headers: {
         Authorization: `Bearer ${tokenJson.access_token}`,
@@ -46,7 +45,7 @@ export default async function handler(req, res) {
     });
     const user = await userResp.json();
 
-    // Get user email
+    // Fetch user email
     const emailResp = await fetch("https://api.github.com/user/emails", {
       headers: {
         Authorization: `Bearer ${tokenJson.access_token}`,
@@ -58,7 +57,7 @@ export default async function handler(req, res) {
       ? emails.find((e) => e.primary)?.email || emails[0]?.email
       : undefined;
 
-    // Encode user info in cookie (for demo)
+    // Save user info in cookie
     const userCookie = Buffer.from(
       JSON.stringify({
         id: user.id,
@@ -69,16 +68,11 @@ export default async function handler(req, res) {
       })
     ).toString("base64");
 
-    const cookieParts = [
-      `gh_user=${userCookie}`,
-      "Path=/",
-      "SameSite=Lax"
-    ];
-    if (baseUrl.startsWith("https")) cookieParts.push("Secure");
+    res.setHeader("Set-Cookie", [
+      `gh_user=${userCookie}; Path=/; SameSite=Lax; Secure`
+    ]);
 
-    res.setHeader("Set-Cookie", cookieParts.join("; "));
-
-    // Redirect to your app page
+    // Redirect to base.html in your repo
     res.writeHead(302, { Location: "/base.html" });
     return res.end();
   } catch (err) {
