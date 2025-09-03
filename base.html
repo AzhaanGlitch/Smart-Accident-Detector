@@ -10,7 +10,18 @@
   <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body data-theme="dark">
-  <div id="dashboard" class="dashboard-container">
+  <!-- LOGIN PAGE -->
+  <div id="loginPage" class="login-container">
+    <div class="login-card text-center">
+      <h2>Welcome</h2>
+      <p>Login to access the dashboard</p>
+      <button class="google-btn btn btn-outline-primary btn-lg">Login with Google</button>
+      <button class="github-btn btn btn-outline-dark btn-lg mt-2">Login with GitHub</button>
+    </div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div id="dashboard" class="dashboard-container" style="display:none;">
     <!-- Sidebar -->
     <aside class="sidebar">
       <div class="sidebar-header">
@@ -46,7 +57,6 @@
             <p>Real-time drone monitoring and accident detection system</p>
           </div>
           <div class="header-status d-flex align-items-center gap-3">
-            <!-- Updated to show user email/name -->
             <span id="userEmail" class="text-info fw-bold">Guest</span>
             <button type="button" class="btn btn-outline-success">
               <span style="color: white;">●</span> Online
