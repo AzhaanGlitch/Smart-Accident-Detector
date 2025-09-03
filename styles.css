@@ -956,3 +956,27 @@ body[data-theme="light"] .drone-card:hover {
   font-weight: 600;
   color: var(--accent);
 }
+/* Style for the user name input inside modal */
+#nameModal .form-control {
+  background: rgba(30, 41, 59, 0.9);  /* dark background */
+  color: #ffffff;                     /* white text */
+  border: 1px solid rgba(59, 130, 246, 0.6); /* bluish border */
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-size: 16px;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3); /* glow effect */
+  transition: all 0.3s ease;
+}
+
+#nameModal .form-control:focus {
+  background: rgba(30, 41, 59, 1);
+  border-color: #3b82f6;
+  color: #ffffff;
+  box-shadow: 0 0 8px #3b82f6, 0 0 15px rgba(59, 130, 246, 0.4);
+  outline: none;
+}
+
+#nameModal .form-control::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
