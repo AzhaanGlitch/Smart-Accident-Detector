@@ -123,6 +123,36 @@ body {
     color: #ea4335;
 }
 
+.github-btn {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    background: #24292e;
+    color: #f9f9f9;
+    border-radius: 8px;
+    font-weight: 500;
+    margin-bottom: 24px;
+    transition: all 0.2s;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.github-btn:hover {
+    background: #1b1f23;
+    border-color: rgba(59, 130, 246, 0.5);
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2);
+}
+
+.github-btn i {
+    margin-right: 8px;
+    color: #ffffff;
+}
+
+.auth-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+}
+
 .divider {
     text-align: center;
     margin: 24px 0;
@@ -305,7 +335,8 @@ body {
 .sidebar-nav ul {
   list-style: none;
   padding: 0 24px;
-  margin-top: 24px;
+  margin-top: 24px; 
+  
 }
 
 .sidebar-nav li {
@@ -770,4 +801,152 @@ body[data-theme="light"] .drone-card {
 
 body[data-theme="light"] .drone-card:hover {
   background: #f1f5f9;
+}
+
+/* Upload Section */
+.upload-section {
+  padding: 0 32px 40px 32px;
+}
+
+.upload-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+}
+
+.upload-area, .prediction-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.drop-zone {
+  border: 2px dashed var(--accent);
+  border-radius: 12px;
+  padding: 40px;
+  text-align: center;
+  color: var(--text-muted);
+  background: rgba(59, 130, 246, 0.05);
+  transition: background 0.2s ease, border 0.2s ease;
+  cursor: pointer;
+}
+
+.drop-zone:hover {
+  background: rgba(59, 130, 246, 0.1);
+  border-color: var(--text-heading);
+}
+
+.drop-zone p {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.preview-card {
+  margin-top: 20px;
+  width: 100%;
+  text-align: center;
+}
+
+.preview-img, .preview-video {
+  max-width: 100%;
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  display: none;
+}
+
+.prediction-box {
+  text-align: center;
+  padding: 30px;
+  border-radius: 12px;
+  background: var(--bg-card);
+  box-shadow: var(--shadow);
+}
+
+.prediction-box h3 {
+  margin-bottom: 16px;
+  font-weight: 700;
+  color: var(--text-heading);
+}
+
+.prediction-box p {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--status-online);
+}
+
+/* Prediction Results Layout */
+/* Prediction Results Section */
+.prediction-results {
+  margin: 40px 32px;
+}
+
+.results-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 28px;
+  margin-top: 20px;
+}
+
+.result-card {
+  background: linear-gradient(145deg, var(--bg-card), var(--bg-main));
+  border: 1px solid rgba(59,130,246,0.3);
+  border-radius: 16px;
+  padding: 24px;
+  text-align: center;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.result-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 32px rgba(59,130,246,0.4);
+}
+
+.result-title {
+  font-weight: 600;
+  font-size: 15px;
+  margin-bottom: 12px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+.result-value {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+/* Add some variety by coloring critical results */
+.result-value.critical {
+  color: var(--status-danger);
+}
+.result-value.warning {
+  color: var(--status-warning);
+}
+.result-value.safe {
+  color: var(--status-online);
+}
+
+/* Upload box styling */
+.upload-box {
+  display: block;
+  border: 2px dashed var(--border-color, #6c757d);
+  border-radius: 12px;
+  padding: 30px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: var(--card-bg, #2c2c2c);
+  color: var(--text-color, #fff);
+}
+
+.upload-box:hover {
+  background: rgba(0, 123, 255, 0.05);
+  border-color: var(--accent-color, #0d6efd);
+  color: var(--accent-color, #0d6efd);
+}
+
+.upload-box i {
+  color: var(--accent-color, #0d6efd);
 }
