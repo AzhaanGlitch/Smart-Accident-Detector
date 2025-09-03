@@ -21,116 +21,104 @@ document.addEventListener('DOMContentLoaded', () => {
   body.setAttribute('data-theme', savedTheme || 'dark');
   setThemeIcon();
 
-  if (themeToggleBtn) {
-    themeToggleBtn.addEventListener('click', () => {
-      const currentTheme = body.getAttribute('data-theme');
-      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-      body.setAttribute('data-theme', newTheme);
-      localStorage.setItem('skywatch-theme', newTheme);
-      setThemeIcon();
-    });
-  }
+  themeToggleBtn?.addEventListener('click', () => {
+    const newTheme = body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    body.setAttribute('data-theme', newTheme);
+    localStorage.setItem('skywatch-theme', newTheme);
+    setThemeIcon();
+  });
 
   function setThemeIcon() {
     if (!themeToggleBtn) return;
-    themeToggleBtn.textContent =
-      body.getAttribute('data-theme') === 'dark' ? '☀️' : '🌙';
+    themeToggleBtn.textContent = body.getAttribute('data-theme') === 'dark' ? '☀️' : '🌙';
   }
 
-  // ================== LOGIN BUTTONS ==================
+  // ================== GOOGLE LOGIN ==================
   const googleBtn = document.querySelector('.google-btn');
-  if (googleBtn) {
-    googleBtn.addEventListener('click', function () {
-      google.accounts.oauth2.initTokenClient({
-        client_id: '860294680521-pbqoefl46mkc5i17l2potqjaccdveatr.apps.googleusercontent.com',
-        scope: 'openid email profile',
-        callback: (tokenResponse) => {
-          const base64Url = tokenResponse.id_token.split('.')[1];
-          const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-          const user = JSON.parse(window.atob(base64));
+  googleBtn?.addEventListener('click', () => {
+    const client = google.accounts.oauth2.initTokenClient({
+      client_id: '860294680521-pbqoefl46mkc5i17l2potqjaccdveatr.apps.googleusercontent.com',
+      scope: 'openid email profile',
+      callback: (tokenResponse) => {
+        if (!tokenResponse || !tokenResponse.id_token) return;
+        const base64Url = tokenResponse.id_token.split('.')[1];
+        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+        const user = JSON.parse(window.atob(base64));
 
-          localStorage.setItem('userName', user.name || 'User');
-          window.location.href = "base.html";
-        }
-      }).requestAccessToken();
+        const name = user.name || 'User';
+        localStorage.setItem('userName', name);
+
+        // Show dashboard and name
+        if (userNameSpan) userNameSpan.textContent = name;
+        if (loginPage) loginPage.style.display = 'none';
+        if (dashboard) dashboard.style.display = 'flex';
+
+        // Initialize dashboard after login
+        initializeDashboard();
+      }
     });
-  }
+    client.requestAccessToken();
+  });
 
-  const githubBtn = document.querySelector('.github-btn');
-  if (githubBtn) {
-    githubBtn.addEventListener('click', function () {
-      githubBtn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span> Redirecting...`;
-      githubBtn.disabled = true;
-      window.location.href = '/api/github/login';
-    });
-  }
-
-  // ================== SHOW USER NAME ==================
+  // ================== SHOW STORED NAME ==================
   const storedName = localStorage.getItem('userName');
-  if (storedName && userNameSpan) {
-    userNameSpan.textContent = `Hello, ${storedName}!`;
+  if (storedName) {
+    if (userNameSpan) userNameSpan.textContent = storedName;
+    if (loginPage) loginPage.style.display = 'none';
+    if (dashboard) dashboard.style.display = 'flex';
+    initializeDashboard();
   }
 
   // ================== LOGOUT ==================
-  if (logoutBtn) {
-    logoutBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      localStorage.removeItem('userName');
-      dashboard.classList.add('d-none');
-      loginPage.classList.remove('d-none');
-    });
-  }
+  logoutBtn?.addEventListener('click', () => {
+    localStorage.removeItem('userName');
+    if (loginPage) loginPage.style.display = 'flex';
+    if (dashboard) dashboard.style.display = 'none';
+  });
 
   // ================== FILE UPLOAD ==================
-  if (fileUpload) {
-    fileUpload.addEventListener('change', () => {
-      const file = fileUpload.files[0];
-      fileNameDisplay.textContent = file ? `✅ File selected: ${file.name}` : '';
+  fileUpload?.addEventListener('change', () => {
+    const file = fileUpload.files[0];
+    if (fileNameDisplay) fileNameDisplay.textContent = file ? `✅ File selected: ${file.name}` : '';
+  });
+
+  uploadBtn?.addEventListener('click', () => {
+    const file = fileUpload.files[0];
+    if (!file) return alert('Please select an image or video first.');
+
+    predictionBox.style.display = 'block';
+    resultImage.style.display = 'none';
+    resultVideo.style.display = 'none';
+
+    if (file.type.startsWith('image')) {
+      resultImage.src = URL.createObjectURL(file);
+      resultImage.style.display = 'block';
+      resultImage.style.maxWidth = '400px';
+      resultImage.style.maxHeight = '250px';
+    } else if (file.type.startsWith('video')) {
+      resultVideo.src = URL.createObjectURL(file);
+      resultVideo.style.display = 'block';
+      resultVideo.style.maxWidth = '400px';
+      resultVideo.style.maxHeight = '250px';
+    }
+
+    const outcomes = {
+      'Accident Status': Math.random() > 0.5 ? '🚨 Accident Detected' : '✅ No Accident',
+      'Severity Level': ['Minor', 'Moderate', 'Severe'][Math.floor(Math.random() * 3)],
+      'Number of Vehicles': Math.floor(Math.random() * 4) + 1,
+      'Confidence Score': `${Math.floor(Math.random() * 21) + 80}%`
+    };
+
+    resultsGrid.innerHTML = '';
+    Object.entries(outcomes).forEach(([title, value]) => {
+      const card = document.createElement('div');
+      card.className = 'result-card';
+      card.innerHTML = `<div class="result-title">${title}</div><div class="result-value">${value}</div>`;
+      resultsGrid.appendChild(card);
     });
-  }
 
-  if (uploadBtn) {
-    uploadBtn.addEventListener('click', () => {
-      const file = fileUpload.files[0];
-      if (!file) return alert('Please select an image or video first.');
-
-      predictionBox.style.display = 'block';
-      resultImage.style.display = 'none';
-      resultVideo.style.display = 'none';
-
-      if (file.type.startsWith('image')) {
-        resultImage.src = URL.createObjectURL(file);
-        resultImage.style.display = 'block';
-        resultImage.style.maxWidth = '400px';
-        resultImage.style.maxHeight = '250px';
-      } else if (file.type.startsWith('video')) {
-        resultVideo.src = URL.createObjectURL(file);
-        resultVideo.style.display = 'block';
-        resultVideo.style.maxWidth = '400px';
-        resultVideo.style.maxHeight = '250px';
-      }
-
-      const outcomes = {
-        'Accident Status': Math.random() > 0.5 ? '🚨 Accident Detected' : '✅ No Accident',
-        'Severity Level': ['Minor', 'Moderate', 'Severe'][Math.floor(Math.random() * 3)],
-        'Number of Vehicles': Math.floor(Math.random() * 4) + 1,
-        'Confidence Score': `${Math.floor(Math.random() * 21) + 80}%`
-      };
-
-      resultsGrid.innerHTML = '';
-      Object.entries(outcomes).forEach(([title, value]) => {
-        const card = document.createElement('div');
-        card.className = 'result-card';
-        card.innerHTML = `
-          <div class="result-title">${title}</div>
-          <div class="result-value">${value}</div>
-        `;
-        resultsGrid.appendChild(card);
-      });
-
-      setTimeout(() => fileUpload.scrollIntoView({ behavior: 'smooth', block: 'start' }), 80);
-    });
-  }
+    setTimeout(() => fileUpload.scrollIntoView({ behavior: 'smooth', block: 'start' }), 80);
+  });
 
   // ================== SYSTEM STATS ==================
   function updateSystemStats() {
@@ -203,7 +191,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }).join('') || '<p>No drones available.</p>';
   }
 
-  // ================== INIT ==================
+  // ================== INIT DASHBOARD ==================
   function initializeDashboard() {
     updateSystemStats();
     updateLiveFeed();
@@ -216,5 +204,6 @@ document.addEventListener('DOMContentLoaded', () => {
     setInterval(updateDroneFleet, 7000);
   }
 
-  if (dashboard && !dashboard.classList.contains('d-none')) initializeDashboard();
+  // Automatically initialize if dashboard is visible
+  if (dashboard && dashboard.style.display !== 'none') initializeDashboard();
 });
