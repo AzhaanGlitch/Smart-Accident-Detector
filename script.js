@@ -1,7 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // ===== DOM Elements =====
-  const loginPage = document.getElementById('loginPage');
-  const dashboard = document.getElementById('dashboard');
   const themeToggleBtn = document.querySelector('.theme-toggle');
   const body = document.body;
   const logoutBtn = document.getElementById('logoutBtn');
@@ -19,61 +16,40 @@ document.addEventListener('DOMContentLoaded', () => {
   // ================== THEME ==================
   const savedTheme = localStorage.getItem('skywatch-theme');
   body.setAttribute('data-theme', savedTheme || 'dark');
-  setThemeIcon();
-
   themeToggleBtn?.addEventListener('click', () => {
     const newTheme = body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
     body.setAttribute('data-theme', newTheme);
     localStorage.setItem('skywatch-theme', newTheme);
-    setThemeIcon();
-  });
-
-  function setThemeIcon() {
-    if (!themeToggleBtn) return;
     themeToggleBtn.textContent = body.getAttribute('data-theme') === 'dark' ? '☀️' : '🌙';
-  }
+  });
+  themeToggleBtn?.click(); // set initial icon
 
   // ================== GOOGLE LOGIN ==================
   const googleBtn = document.querySelector('.google-btn');
   googleBtn?.addEventListener('click', () => {
-    const client = google.accounts.oauth2.initTokenClient({
+    google.accounts.oauth2.initTokenClient({
       client_id: '860294680521-pbqoefl46mkc5i17l2potqjaccdveatr.apps.googleusercontent.com',
       scope: 'openid email profile',
       callback: (tokenResponse) => {
-        if (!tokenResponse || !tokenResponse.id_token) return;
+        if (!tokenResponse?.id_token) return;
         const base64Url = tokenResponse.id_token.split('.')[1];
         const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
         const user = JSON.parse(window.atob(base64));
-
         const name = user.name || 'User';
         localStorage.setItem('userName', name);
-
-        // Show dashboard and name
         if (userNameSpan) userNameSpan.textContent = name;
-        if (loginPage) loginPage.style.display = 'none';
-        if (dashboard) dashboard.style.display = 'flex';
-
-        // Initialize dashboard after login
-        initializeDashboard();
       }
-    });
-    client.requestAccessToken();
+    }).requestAccessToken();
   });
 
   // ================== SHOW STORED NAME ==================
   const storedName = localStorage.getItem('userName');
-  if (storedName) {
-    if (userNameSpan) userNameSpan.textContent = storedName;
-    if (loginPage) loginPage.style.display = 'none';
-    if (dashboard) dashboard.style.display = 'flex';
-    initializeDashboard();
-  }
+  if (storedName && userNameSpan) userNameSpan.textContent = storedName;
 
   // ================== LOGOUT ==================
   logoutBtn?.addEventListener('click', () => {
     localStorage.removeItem('userName');
-    if (loginPage) loginPage.style.display = 'flex';
-    if (dashboard) dashboard.style.display = 'none';
+    if (userNameSpan) userNameSpan.textContent = 'Guest';
   });
 
   // ================== FILE UPLOAD ==================
@@ -116,26 +92,19 @@ document.addEventListener('DOMContentLoaded', () => {
       card.innerHTML = `<div class="result-title">${title}</div><div class="result-value">${value}</div>`;
       resultsGrid.appendChild(card);
     });
-
-    setTimeout(() => fileUpload.scrollIntoView({ behavior: 'smooth', block: 'start' }), 80);
   });
 
-  // ================== SYSTEM STATS ==================
+  // ================== DASHBOARD FUNCTIONS ==================
   function updateSystemStats() {
-    const activeDrones = Math.floor(Math.random() * 5) + 1;
-    const alertsToday = Math.floor(Math.random() * 10);
-    const detectionRate = Math.floor(Math.random() * 30) + 70;
-
     const statValues = document.querySelectorAll('.stat-value');
     if (statValues.length >= 4) {
-      statValues[0].textContent = activeDrones;
-      statValues[1].textContent = alertsToday;
-      statValues[2].textContent = detectionRate + '%';
+      statValues[0].textContent = Math.floor(Math.random() * 5) + 1;
+      statValues[1].textContent = Math.floor(Math.random() * 10);
+      statValues[2].textContent = Math.floor(Math.random() * 30) + 70 + '%';
       statValues[3].textContent = 'ONLINE';
     }
   }
 
-  // ================== LIVE FEED ==================
   function updateLiveFeed() {
     const feedContent = document.querySelector('.live-feed .card-content .live-feed-box');
     if (!feedContent) return;
@@ -145,7 +114,6 @@ document.addEventListener('DOMContentLoaded', () => {
       : `<p>Live feed is currently disconnected.</p>`;
   }
 
-  // ================== ALERTS ==================
   function updateAlerts() {
     const alertsSection = document.getElementById('recentAlerts');
     if (!alertsSection) return;
@@ -169,7 +137,6 @@ document.addEventListener('DOMContentLoaded', () => {
     `).join('') || '<p>No recent alerts.</p>';
   }
 
-  // ================== DRONE FLEET ==================
   function updateDroneFleet() {
     const fleetSection = document.getElementById('droneFleet');
     if (!fleetSection) return;
@@ -191,7 +158,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }).join('') || '<p>No drones available.</p>';
   }
 
-  // ================== INIT DASHBOARD ==================
+  // ================== INIT ==================
   function initializeDashboard() {
     updateSystemStats();
     updateLiveFeed();
@@ -204,6 +171,5 @@ document.addEventListener('DOMContentLoaded', () => {
     setInterval(updateDroneFleet, 7000);
   }
 
-  // Automatically initialize if dashboard is visible
-  if (dashboard && dashboard.style.display !== 'none') initializeDashboard();
+  initializeDashboard();
 });
