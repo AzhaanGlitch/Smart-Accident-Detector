@@ -1,20 +1,25 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // DOM Elements
+  // ===== DOM Elements =====
   const loginPage = document.getElementById('loginPage');
   const dashboard = document.getElementById('dashboard');
-  const loginForm = document.getElementById('loginForm');
   const themeToggleBtn = document.querySelector('.theme-toggle');
   const body = document.body;
-  const refreshBtn = document.getElementById('refreshBtn');
-  const fleetRefreshBtn = document.querySelector('.fleet-status-section .refresh-btn');
   const logoutBtn = document.getElementById('logoutBtn');
 
-  // Load saved theme or default to dark
+  // Upload elements
+  const fileUpload = document.getElementById('fileUpload');
+  const fileNameDisplay = document.getElementById('fileNameDisplay');
+  const uploadBtn = document.getElementById('uploadBtn');
+  const predictionBox = document.getElementById('predictionBox');
+  const resultImage = document.getElementById('resultImage');
+  const resultVideo = document.getElementById('resultVideo');
+  const resultsGrid = document.getElementById('resultsGrid');
+
+  // ================== THEME ==================
   const savedTheme = localStorage.getItem('skywatch-theme');
   body.setAttribute('data-theme', savedTheme || 'dark');
   setThemeIcon();
 
-  // Theme toggle event
   if (themeToggleBtn) {
     themeToggleBtn.addEventListener('click', () => {
       const currentTheme = body.getAttribute('data-theme');
@@ -27,79 +32,132 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function setThemeIcon() {
     if (!themeToggleBtn) return;
-    themeToggleBtn.textContent = body.getAttribute('data-theme') === 'dark' ? '☀️' : '🌙';
+    themeToggleBtn.textContent =
+      body.getAttribute('data-theme') === 'dark' ? '☀️' : '🌙';
   }
 
-  // Login functionality
-  if (loginForm) {
-    loginForm.addEventListener('submit', function(e) {
-      e.preventDefault();
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
-      if (email && password) {
-        showLoading();
-        setTimeout(() => {
-          loginPage.classList.add('d-none');
-          dashboard.classList.remove('d-none');
-          initializeDashboard();
-        }, 1500);
-      }
-    });
-  }
-
-  // Google login simulation
+  // ================== LOGIN BUTTONS ==================
   const googleBtn = document.querySelector('.google-btn');
   if (googleBtn) {
-    googleBtn.addEventListener('click', function() {
-      showLoading();
-      setTimeout(() => {
-        loginPage.classList.add('d-none');
-        dashboard.classList.remove('d-none');
-        initializeDashboard();
-      }, 1500);
+    googleBtn.addEventListener('click', function () {
+      const codeClient = google.accounts.oauth2.initCodeClient({
+        client_id: '860294680521-b9vqb70omgjbanptmq56nvo4jb81kvb7.apps.googleusercontent.com', // ✅ new ID
+        scope: 'openid email profile',
+        ux_mode: 'popup',
+        redirect_uri: 'http://127.0.0.1:3000/login.html', // ✅ must match Console
+        callback: (response) => {
+          console.log("Google login response:", response);
+
+          if (response && response.code) {
+            // ✅ Show loader before redirect
+            googleBtn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span> Redirecting...`;
+            googleBtn.disabled = true;
+
+            setTimeout(() => {
+              window.location.href = "base.html";
+            }, 2000); // wait 2 seconds
+          } else {
+            console.error("Google login failed: No code received");
+          }
+        }
+      });
+      codeClient.requestCode();
     });
   }
 
-  // Logout functionality
-  if(logoutBtn) {
-    logoutBtn.addEventListener('click', function(e) {
-      e.preventDefault();
-      dashboard.classList.add('d-none');
-      loginPage.classList.remove('d-none');
-      // Reset login form
-      if (loginForm) {
-        loginForm.reset();
-      }
+  const githubBtn = document.querySelector('.github-btn');
+  if (githubBtn) {
+    githubBtn.addEventListener('click', function () {
+      showLoading(githubBtn, "Signing in with GitHub...");
     });
   }
 
-  // Show loading state
-  function showLoading() {
-    const submitBtn = document.querySelector('.signin-btn');
-    if (!submitBtn) return;
-    const originalText = submitBtn.textContent;
-    submitBtn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span>Signing in...`;
-    submitBtn.disabled = true;
+  function showLoading(button, message) {
+    const originalText = button.innerHTML;
+    button.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span>${message}`;
+    button.disabled = true;
     setTimeout(() => {
-      submitBtn.textContent = originalText;
-      submitBtn.disabled = false;
+      loginPage.classList.add('d-none');
+      dashboard.classList.remove('d-none');
+      initializeDashboard();
+      button.innerHTML = originalText;
+      button.disabled = false;
     }, 1500);
   }
 
-  // Initialize dashboard
-  function initializeDashboard() {
-    updateSystemStats();
-    updateLiveFeed();
-    updateAlerts();
-    updateDroneFleet();
-
-    setInterval(updateSystemStats, 5000);
-    setInterval(updateLiveFeed, 3000);
-    setInterval(updateAlerts, 10000);
-    setInterval(updateDroneFleet, 7000);
+  // ================== FILE UPLOAD CONFIRMATION ==================
+  if (fileUpload) {
+    fileUpload.addEventListener('change', () => {
+      const file = fileUpload.files[0];
+      if (file && fileNameDisplay) {
+        fileNameDisplay.textContent = `✅ File selected: ${file.name}`;
+      } else if (fileNameDisplay) {
+        fileNameDisplay.textContent = '';
+      }
+    });
   }
 
-  // Update system statistics
+  // ===== Auto-scroll helper =====
+  function smoothScrollIntoView(el) {
+    if (!el) return;
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  // ================== RUN TEST ==================
+  if (uploadBtn) {
+    uploadBtn.addEventListener('click', () => {
+      const file = fileUpload.files[0];
+      if (!file) {
+        alert('Please select an image or video first.');
+        return;
+      }
+
+      predictionBox.style.display = 'block';
+
+      // Reset media
+      resultImage.style.display = 'none';
+      resultVideo.style.display = 'none';
+
+      // Show uploaded file inside results
+      if (file.type.startsWith('image')) {
+        resultImage.src = URL.createObjectURL(file);
+        resultImage.style.display = 'block';
+        resultImage.style.maxWidth = '400px';
+        resultImage.style.maxHeight = '250px';
+      } else if (file.type.startsWith('video')) {
+        resultVideo.src = URL.createObjectURL(file);
+        resultVideo.style.display = 'block';
+        resultVideo.style.maxWidth = '400px';
+        resultVideo.style.maxHeight = '250px';
+      }
+
+      // Example realistic outcomes
+      const outcomes = {
+        'Accident Status':
+          Math.random() > 0.5 ? '🚨 Accident Detected' : '✅ No Accident',
+        'Severity Level': ['Minor', 'Moderate', 'Severe'][Math.floor(Math.random() * 3)],
+        'Number of Vehicles': Math.floor(Math.random() * 4) + 1,
+        'Confidence Score': `${Math.floor(Math.random() * 21) + 80}%`
+      };
+
+      // Inject outcome cards
+      resultsGrid.innerHTML = '';
+      Object.entries(outcomes).forEach(([title, value]) => {
+        const card = document.createElement('div');
+        card.className = 'result-card';
+        card.innerHTML = `
+          <div class="result-title">${title}</div>
+          <div class="result-value">${value}</div>
+        `;
+        resultsGrid.appendChild(card);
+      });
+
+      // Smooth auto-scroll to the prediction results
+      setTimeout(() => smoothScrollIntoView(predictionBox), 80);
+    });
+  }
+
+  // ================== SYSTEM STATS ==================
   function updateSystemStats() {
     const activeDrones = Math.floor(Math.random() * 5) + 1;
     const alertsToday = Math.floor(Math.random() * 10);
@@ -114,34 +172,39 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Update live feed
+  // ================== LIVE FEED ==================
   function updateLiveFeed() {
-    const feedContent = document.querySelector('.live-feed .card-content .live-feed-box');
+    const feedContent = document.querySelector(
+      '.live-feed .card-content .live-feed-box'
+    );
     if (!feedContent) return;
     const isConnected = Math.random() > 0.3;
     feedContent.innerHTML = isConnected
-      ? `<div class="detected-object-box"><p>Object Detected</p><small>Confidence: ${Math.floor(Math.random() * 20) + 80}%</small></div>`
+      ? `<div class="detected-object-box"><p>Object Detected</p><small>Confidence: ${Math.floor(
+          Math.random() * 20
+        ) + 80}%</small></div>`
       : `<p>Live feed is currently disconnected.</p>`;
   }
 
-  // Update alerts
+  // ================== ALERTS ==================
   function updateAlerts() {
     const alertsSection = document.getElementById('recentAlerts');
     if (!alertsSection) return;
-    
-    // Static alerts for demonstration, can be randomized
+
     const alerts = [
-      { text: "System Update Available", status: "resolved", time: "10:43:39 PM" },
-      { text: "Connection Lost", status: "resolved", time: "10:03:47 PM" },
-      { text: "Critical Anomaly Detected", status: "critical", time: "10:10:58 PM" },
-      { text: "Drone Battery Low (Drone 1)", status: "warning", time: "9:55:01 PM" },
-      { text: "Unauthorized Access Attempt", status: "critical", time: "9:30:15 PM" }
+      { text: 'System Update Available', status: 'resolved', time: '10:43:39 PM' },
+      { text: 'Connection Lost', status: 'resolved', time: '10:03:47 PM' },
+      { text: 'Critical Anomaly Detected', status: 'critical', time: '10:10:58 PM' },
+      { text: 'Drone Battery Low (Drone 1)', status: 'warning', time: '9:55:01 PM' },
+      { text: 'Unauthorized Access Attempt', status: 'critical', time: '9:30:15 PM' }
     ];
 
-    const randomAlerts = alerts.sort(() => 0.5 - Math.random()).slice(0, Math.floor(Math.random() * 3) + 1);
+    const randomAlerts = alerts
+      .sort(() => 0.5 - Math.random())
+      .slice(0, Math.floor(Math.random() * 3) + 1);
 
     let alertsHtml = '';
-    randomAlerts.forEach(alert => {
+    randomAlerts.forEach((alert) => {
       alertsHtml += `
         <div class="alert-row">
           <span class="alert-icon">⚠️</span>
@@ -154,16 +217,16 @@ document.addEventListener('DOMContentLoaded', () => {
     alertsSection.innerHTML = alertsHtml || '<p>No recent alerts.</p>';
   }
 
-  // Update drone fleet with random statuses
+  // ================== DRONE FLEET ==================
   function updateDroneFleet() {
     const fleetSection = document.getElementById('droneFleet');
     if (!fleetSection) return;
 
-    const statuses = ["online", "offline", "warning"];
+    const statuses = ['online', 'offline', 'warning'];
     const statusLabels = {
-      "online": "ONLINE",
-      "offline": "OFFLINE",
-      "warning": "WARNING"
+      online: 'ONLINE',
+      offline: 'OFFLINE',
+      warning: 'WARNING'
     };
 
     const droneCount = Math.floor(Math.random() * 5) + 1;
@@ -185,30 +248,25 @@ document.addEventListener('DOMContentLoaded', () => {
     fleetSection.innerHTML = fleetHtml || '<p>No drones available.</p>';
   }
 
-  // Footer Refresh button
-  if (refreshBtn) {
-    refreshBtn.addEventListener('click', () => {
-      refreshBtn.textContent = 'Refreshing...';
-      refreshBtn.disabled = true;
-      setTimeout(() => {
-        refreshBtn.textContent = 'Refresh';
-        refreshBtn.disabled = false;
-        updateSystemStats();
-        updateLiveFeed();
-        updateAlerts();
-        updateDroneFleet();
-      }, 1000);
+  // ================== LOGOUT ==================
+  if (logoutBtn) {
+    logoutBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      dashboard.classList.add('d-none');
+      loginPage.classList.remove('d-none');
     });
   }
 
-  // Fleet Refresh button
-  if (fleetRefreshBtn) {
-    fleetRefreshBtn.addEventListener('click', () => {
-      fleetRefreshBtn.innerHTML = '<span>🔄</span> <span class="ms-1">Refreshing...</span>';
-      setTimeout(() => {
-        updateDroneFleet();
-        fleetRefreshBtn.innerHTML = '<span>🔄</span> <span class="ms-1">Refresh</span>';
-      }, 1000);
-    });
+  // ================== INIT ==================
+  function initializeDashboard() {
+    updateSystemStats();
+    updateLiveFeed();
+    updateAlerts();
+    updateDroneFleet();
+
+    setInterval(updateSystemStats, 5000);
+    setInterval(updateLiveFeed, 3000);
+    setInterval(updateAlerts, 10000);
+    setInterval(updateDroneFleet, 7000);
   }
 });
