@@ -68,7 +68,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const githubBtn = document.querySelector('.github-btn');
   if (githubBtn) {
     githubBtn.addEventListener('click', function () {
-      showLoading(githubBtn, "Signing in with GitHub...");
+      githubBtn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span> Redirecting...`;
+      githubBtn.disabled = true;
+      window.location.href = '/api/github/login';
     });
   }
 
