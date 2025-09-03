@@ -166,7 +166,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // ================== SYSTEM STATS / OTHERS ==================
+  // ================== SYSTEM STATS ==================
   function updateSystemStats() {
     const activeDrones = Math.floor(Math.random() * 5) + 1;
     const alertsToday = Math.floor(Math.random() * 10);
@@ -181,9 +181,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  function updateLiveFeed() { /* unchanged */ }
-  function updateAlerts() { /* unchanged */ }
-  function updateDroneFleet() { /* unchanged */ }
+  function updateLiveFeed() { /* keep as before */ }
+  function updateAlerts() { /* keep as before */ }
+  function updateDroneFleet() { /* keep as before */ }
 
   if (logoutBtn) {
     logoutBtn.addEventListener('click', (e) => {
@@ -205,5 +205,10 @@ document.addEventListener('DOMContentLoaded', () => {
     setInterval(updateLiveFeed, 3000);
     setInterval(updateAlerts, 10000);
     setInterval(updateDroneFleet, 7000);
+  }
+
+  // 🔹 Auto-run initializeDashboard if dashboard exists
+  if (dashboard) {
+    initializeDashboard();
   }
 });
