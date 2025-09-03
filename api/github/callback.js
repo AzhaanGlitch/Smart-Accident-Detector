@@ -1,97 +1,58 @@
 // /api/github/callback.js
+import fetch from "node-fetch";
+import cookie from "cookie";
+
 export default async function handler(req, res) {
+  const { code, state } = req.query;
+
+  if (!code || !state) {
+    return res.status(400).send("Missing code or state from GitHub");
+  }
+
+  // Parse cookies to verify state
+  const cookies = cookie.parse(req.headers.cookie || "");
+  const savedState = cookies.gh_oauth_state;
+
+  if (!savedState || savedState !== state) {
+    return res.status(400).send("Invalid state, potential CSRF attack");
+  }
+
   try {
-    const baseUrl = process.env.BASE_URL || "http://localhost:3000";
-    const clientId = process.env.GITHUB_CLIENT_ID;
-    const clientSecret = process.env.GITHUB_CLIENT_SECRET;
-    const redirectUri = `${baseUrl}/api/github/callback`;
-
-    const { code, state } = req.query || {};
-
-    // Verify state cookie
-    const cookies = parseCookies(req.headers.cookie || "");
-    const savedState = cookies["gh_oauth_state"];
-    if (!code || !state || state !== savedState) {
-      return res.status(400).send("Invalid state or code");
-    }
-
-    // Exchange code for token
-    const tokenResp = await fetch("https://github.com/login/oauth/access_token", {
+    // Exchange code for access token
+    const tokenResponse = await fetch("https://github.com/login/oauth/access_token", {
       method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      },
+      headers: { "Content-Type": "application/json", Accept: "application/json" },
       body: JSON.stringify({
-        client_id: clientId,
-        client_secret: clientSecret,
+        client_id: process.env.GITHUB_CLIENT_ID,
+        client_secret: process.env.GITHUB_CLIENT_SECRET,
         code,
-        redirect_uri: redirectUri,
+        redirect_uri: "https://smart-accident-detector.vercel.app/api/github/callback",
         state
       })
     });
 
-    const tokenJson = await tokenResp.json();
-    if (!tokenJson.access_token) {
-      return res.status(400).send("Failed to obtain access token");
+    const data = await tokenResponse.json();
+
+    if (data.error) {
+      return res.status(400).send(`Error fetching access token: ${data.error_description}`);
     }
 
-    // Fetch user profile
-    const userResp = await fetch("https://api.github.com/user", {
-      headers: {
-        Authorization: `Bearer ${tokenJson.access_token}`,
-        "User-Agent": "smart-accident-detector"
-      }
+    const accessToken = data.access_token;
+
+    // Optional: fetch GitHub user info
+    const userResponse = await fetch("https://api.github.com/user", {
+      headers: { Authorization: `token ${accessToken}` }
     });
-    const user = await userResp.json();
+    const user = await userResponse.json();
+    console.log("GitHub user info:", user);
 
-    // Fetch user email
-    const emailResp = await fetch("https://api.github.com/user/emails", {
-      headers: {
-        Authorization: `Bearer ${tokenJson.access_token}`,
-        "User-Agent": "smart-accident-detector"
-      }
-    });
-    const emails = await emailResp.json();
-    const primaryEmail = Array.isArray(emails)
-      ? emails.find((e) => e.primary)?.email || emails[0]?.email
-      : undefined;
+    // Clear the state cookie after successful login
+    res.setHeader("Set-Cookie", "gh_oauth_state=; Path=/; HttpOnly; Secure; Max-Age=0");
 
-    // Save user info in cookie
-    const userCookie = Buffer.from(
-      JSON.stringify({
-        id: user.id,
-        login: user.login,
-        name: user.name,
-        avatar: user.avatar_url,
-        email: primaryEmail
-      })
-    ).toString("base64");
-
-    res.setHeader("Set-Cookie", [
-      `gh_user=${userCookie}; Path=/; SameSite=Lax; Secure`
-    ]);
-
-    // Redirect to base.html in your repo
-    res.writeHead(302, { Location: "/base.html" });
-    return res.end();
+    // Redirect to your main page after login
+    res.redirect("/base.html");
   } catch (err) {
-    console.error("GitHub callback error", err);
-    res.status(500).send("GitHub OAuth failed");
+    console.error(err);
+    res.status(500).send("Internal Server Error");
   }
-}
-
-function parseCookies(cookieHeader) {
-  return cookieHeader
-    .split(";")
-    .map((v) => v.trim())
-    .filter(Boolean)
-    .reduce((acc, pair) => {
-      const idx = pair.indexOf("=");
-      if (idx === -1) return acc;
-      const key = decodeURIComponent(pair.slice(0, idx).trim());
-      const val = decodeURIComponent(pair.slice(idx + 1).trim());
-      acc[key] = val;
-      return acc;
-    }, {});
 }
