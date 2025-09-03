@@ -1,78 +1,99 @@
 // /api/github/callback.js
 export default async function handler(req, res) {
   try {
-    const baseUrl = process.env.BASE_URL || `http://${req.headers.host}`;
+    const baseUrl = process.env.BASE_URL || `https://${req.headers.host}`;
     const clientId = process.env.GITHUB_CLIENT_ID;
     const clientSecret = process.env.GITHUB_CLIENT_SECRET;
+    const redirectUri = `${baseUrl}/api/github/callback`;
 
     const { code, state } = req.query || {};
 
     // read cookie (gh_oauth_state)
-    const cookies = parseCookies(req.headers.cookie || '');
-    const savedState = cookies['gh_oauth_state'];
+    const cookies = parseCookies(req.headers.cookie || "");
+    const savedState = cookies["gh_oauth_state"];
 
     if (!code || !state || state !== savedState) {
-      return res.status(400).send('Invalid state or code');
+      return res.status(400).send("Invalid state or code");
     }
 
     // Exchange code for access token
-    const tokenResp = await fetch('https://github.com/login/oauth/access_token', {
-      method: 'POST',
-      headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+    const tokenResp = await fetch("https://github.com/login/oauth/access_token", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
       body: JSON.stringify({
         client_id: clientId,
         client_secret: clientSecret,
         code,
-        redirect_uri: `${baseUrl}/api/github/callback`,
+        redirect_uri: redirectUri,
         state
       })
     });
+
     const tokenJson = await tokenResp.json();
-    if (!tokenJson.access_token) return res.status(400).send('Failed to obtain access token');
+    if (!tokenJson.access_token) {
+      return res.status(400).send("Failed to obtain access token");
+    }
 
     // Get user profile
-    const userResp = await fetch('https://api.github.com/user', {
-      headers: { Authorization: `Bearer ${tokenJson.access_token}`, 'User-Agent': 'smart-accident-detector' }
+    const userResp = await fetch("https://api.github.com/user", {
+      headers: {
+        Authorization: `Bearer ${tokenJson.access_token}`,
+        "User-Agent": "smart-accident-detector"
+      }
     });
     const user = await userResp.json();
 
     // Get user email
-    const emailResp = await fetch('https://api.github.com/user/emails', {
-      headers: { Authorization: `Bearer ${tokenJson.access_token}`, 'User-Agent': 'smart-accident-detector' }
+    const emailResp = await fetch("https://api.github.com/user/emails", {
+      headers: {
+        Authorization: `Bearer ${tokenJson.access_token}`,
+        "User-Agent": "smart-accident-detector"
+      }
     });
     const emails = await emailResp.json();
-    const primaryEmail = Array.isArray(emails) ? (emails.find(e => e.primary)?.email || emails[0]?.email) : undefined;
+    const primaryEmail = Array.isArray(emails)
+      ? emails.find((e) => e.primary)?.email || emails[0]?.email
+      : undefined;
 
-    // Encode user info in cookie (demo purpose only!)
-    const userCookie = Buffer.from(JSON.stringify({
-      id: user.id, login: user.login, name: user.name, avatar: user.avatar_url, email: primaryEmail
-    })).toString('base64');
+    // Encode user info in cookie (for demo)
+    const userCookie = Buffer.from(
+      JSON.stringify({
+        id: user.id,
+        login: user.login,
+        name: user.name,
+        avatar: user.avatar_url,
+        email: primaryEmail
+      })
+    ).toString("base64");
 
     const cookieParts = [
       `gh_user=${userCookie}`,
-      'Path=/',
-      'SameSite=Lax'
+      "Path=/",
+      "SameSite=Lax"
     ];
-    if (baseUrl.startsWith('https')) cookieParts.push('Secure');
+    if (baseUrl.startsWith("https")) cookieParts.push("Secure");
 
-    res.setHeader('Set-Cookie', cookieParts.join('; '));
+    res.setHeader("Set-Cookie", cookieParts.join("; "));
 
     // Redirect to your app page
-    res.writeHead(302, { Location: '/base.html' });
+    res.writeHead(302, { Location: "/base.html" });
     return res.end();
   } catch (err) {
-    console.error('GitHub callback error', err);
-    res.status(500).send('GitHub OAuth failed');
+    console.error("GitHub callback error", err);
+    res.status(500).send("GitHub OAuth failed");
   }
 }
 
 function parseCookies(cookieHeader) {
   return cookieHeader
-    .split(';')
-    .map(v => v.trim())
+    .split(";")
+    .map((v) => v.trim())
     .filter(Boolean)
     .reduce((acc, pair) => {
-      const idx = pair.indexOf('=');
+      const idx = pair.indexOf("=");
       if (idx === -1) return acc;
       const key = decodeURIComponent(pair.slice(0, idx).trim());
       const val = decodeURIComponent(pair.slice(idx + 1).trim());
