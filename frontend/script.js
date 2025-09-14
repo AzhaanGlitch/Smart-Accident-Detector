@@ -194,14 +194,12 @@ document.addEventListener('DOMContentLoaded', () => {
   function updateAlerts() { /* keep as before */ }
   function updateDroneFleet() { /* keep as before */ }
 
- if (logoutBtn) {
+  if (logoutBtn) {
     logoutBtn.addEventListener('click', (e) => {
       e.preventDefault();
-      dashboard.classList.add('d-none');
-      loginPage.classList.remove('d-none');
-      setTimeout(() => {
-        window.location.href = "/index.html";
-      }, 100);
+      localStorage.removeItem('userName');
+      localStorage.removeItem('googleName');
+      window.location.href = "/index.html";
     });
   }
 
