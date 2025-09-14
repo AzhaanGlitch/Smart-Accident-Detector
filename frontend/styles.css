@@ -329,6 +329,7 @@ body {
   justify-content: center;
   overflow: hidden;
   background: #ffffff;
+  flex-shrink: 0;
 }
 
 #drone-logo{
