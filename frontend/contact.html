@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,11 +23,12 @@
             background: var(--bg-dark-primary);
             color: var(--text-light);
             line-height: 1.6;
-            display: flex; 
+            display: flex;
         }
 
         .sidebar {
             width: 220px;
+            min-width: 220px;
             background: linear-gradient(180deg, #1a1d3a 0%, #2a2f5a 100%);
             display: flex;
             flex-direction: column;
@@ -116,17 +118,24 @@
             width: 16px;
             text-align: center;
         }
-        
+
         .main-content {
-            flex-grow: 1; 
+            flex-grow: 1;
             padding: 60px 5%;
             animation: fadeIn 1s ease-in-out;
             box-sizing: border-box;
         }
-        
+
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         h2 {
@@ -136,13 +145,13 @@
             padding-bottom: 10px;
             margin-bottom: 40px;
             text-align: center;
-            display: inline-block; 
+            display: inline-block;
         }
-        
+
         .content-center {
-             display: flex;
-             flex-direction: column;
-             align-items: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         .form-container {
@@ -155,14 +164,15 @@
             width: 100%;
             max-width: 500px;
         }
-        
+
         form {
             display: flex;
             flex-direction: column;
             gap: 20px;
         }
 
-        form input, form textarea {
+        form input,
+        form textarea {
             padding: 15px;
             border: 1px solid transparent;
             border-radius: 8px;
@@ -174,15 +184,16 @@
             transition: border-color 0.3s ease, box-shadow 0.3s ease;
         }
 
-        form input:focus, form textarea:focus {
+        form input:focus,
+        form textarea:focus {
             border-color: var(--accent-primary);
             box-shadow: 0 0 15px rgba(76, 201, 240, 0.3);
         }
-        
+
         form textarea {
             resize: vertical;
         }
-        
+
         form button {
             padding: 15px;
             background: linear-gradient(45deg, var(--accent-secondary), var(--accent-primary));
@@ -209,34 +220,39 @@
             margin-top: 40px;
         }
 
-         @media (max-width: 900px) {
+        @media (max-width: 900px) {
             body {
                 flex-direction: column;
             }
+
             .sidebar {
                 width: 100%;
                 height: auto;
                 position: relative;
             }
+
             .sidebar-header {
                 padding: 1rem;
             }
+
             .sidebar-nav {
                 padding: 0.5rem 0;
             }
+
             .sidebar-nav ul {
                 display: flex;
                 justify-content: center;
                 flex-wrap: wrap;
                 gap: 10px;
             }
+
             .sidebar-nav li {
                 margin: 0;
             }
         }
-
     </style>
 </head>
+
 <body>
 
     <aside class="sidebar">
@@ -278,4 +294,5 @@
     </main>
 
 </body>
+
 </html>

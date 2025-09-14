@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,7 +12,7 @@
             font-family: 'Inter', sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #0A0A1F; 
+            background-color: #0A0A1F;
             color: #e0e0f0;
             display: flex;
             min-height: 100vh;
@@ -19,6 +20,7 @@
 
         .sidebar {
             width: 220px;
+            min-width: 220px;
             background: linear-gradient(180deg, #1a1d3a 0%, #2a2f5a 100%);
             display: flex;
             flex-direction: column;
@@ -147,7 +149,7 @@
         }
 
         .feature-card {
-            background: linear-gradient(135deg, #1A2B42 0%, #2A3C53 100%); 
+            background: linear-gradient(135deg, #1A2B42 0%, #2A3C53 100%);
             border-radius: 15px;
             padding: 30px;
             text-align: center;
@@ -163,9 +165,9 @@
         }
 
         .feature-card:hover {
-            transform: translateY(-8px); 
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6), 
-                        0 0 25px 8px rgba(0, 200, 255, 0.5); 
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6),
+                0 0 25px 8px rgba(0, 200, 255, 0.5);
             border-color: rgba(0, 200, 255, 0.7);
         }
 
@@ -184,7 +186,7 @@
 
         .feature-card p {
             font-size: 0.95em;
-            color: #c0c0e0; 
+            color: #c0c0e0;
             line-height: 1.6;
         }
 
@@ -192,34 +194,42 @@
             body {
                 flex-direction: column;
             }
+
             .sidebar {
                 width: 100%;
                 height: auto;
                 position: relative;
                 box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
             }
+
             .sidebar-header {
                 padding: 1rem;
             }
+
             .sidebar-nav {
                 padding: 0.5rem 0;
             }
+
             .sidebar-nav ul {
                 display: flex;
                 justify-content: center;
                 flex-wrap: wrap;
                 gap: 10px;
             }
+
             .sidebar-nav li {
                 margin: 0;
             }
+
             .main-content {
                 padding: 30px 20px;
             }
+
             .main-content h1 {
                 font-size: 2.2em;
                 margin-bottom: 40px;
             }
+
             .features-grid {
                 grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             }
@@ -230,15 +240,18 @@
                 font-size: 1.8em;
                 margin-bottom: 30px;
             }
+
             .feature-card {
                 padding: 25px;
             }
+
             .feature-card .icon {
                 font-size: 3em;
             }
         }
     </style>
 </head>
+
 <body>
     <aside class="sidebar">
         <div class="sidebar-header">
@@ -307,4 +320,5 @@
         </section>
     </main>
 </body>
+
 </html>
