@@ -318,25 +318,22 @@ body {
   display: flex;
   align-items: center;
   gap: 1rem;
-  flex-wrap: nowrap;
 }
 
 .brand-icon {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  display: inline-flex;
+  display: inline-block;
   align-items: center;
   justify-content: center;
   overflow: hidden;
   background: #ffffff;
-  flex-shrink: 0;
 }
 
-#drone-logo {
+#drone-logo{
   height: 40px;
   width: 40px;
-  object-fit: contain;
 }
 
 .brand-title {
@@ -345,7 +342,6 @@ body {
   color: #ffffff;
   margin: 0;
   line-height: 1.2;
-  white-space: nowrap;
 }
 
 .brand-subtitle {
@@ -663,6 +659,7 @@ body {
   margin-bottom: 18px;
 }
 
+
 .alert-icon {
   font-size: 18px;
   flex-shrink: 0;
@@ -722,6 +719,7 @@ body {
 }
 
 /* Responsive */
+
 @media (max-width: 900px) {
   .content-grid {
     grid-template-columns: 1fr;
