@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
             googleBtn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span> Redirecting...`;
             googleBtn.disabled = true;
             setTimeout(() => {
-              window.location.href = "base.html";
+              window.location.href = "frontend/base.html";
             }, 2000);
           } else {
             console.error("Google login failed: No code received");
