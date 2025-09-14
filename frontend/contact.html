@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Drone System - Contact Us</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark-primary: #0d1b2a;
+            --bg-glass: rgba(27, 38, 59, 0.6);
+            --border-glass: rgba(255, 255, 255, 0.1);
+            --text-light: #e0e1dd;
+            --text-dark: #b0b3b8;
+            --accent-primary: #4cc9f0;
+            --accent-secondary: #38a3c7;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg-dark-primary);
+            color: var(--text-light);
+            line-height: 1.6;
+            display: flex; 
+        }
+
+        .vertical-navbar {
+            width: 240px;
+            flex-shrink: 0; 
+            height: 100vh;
+            background: var(--bg-glass);
+            backdrop-filter: blur(10px);
+            border-right: 1px solid var(--border-glass);
+            position: sticky;
+            top: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 30px 0;
+            box-sizing: border-box;
+            z-index: 1000;
+        }
+
+        .logo {
+            margin: 0;
+            font-size: 1.8em;
+            font-weight: 700;
+            color: var(--accent-primary);
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        nav {
+            display: flex;
+            flex-direction: column; 
+            align-items: center;
+            gap: 25px;
+            width: 100%;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-light);
+            font-weight: 600;
+            transition: color 0.3s ease;
+            position: relative;
+            padding: 10px 20px;
+            width: 80%;
+            text-align: center;
+            box-sizing: border-box;
+        }
+        
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--accent-primary);
+            transform: scaleX(0);
+            transform-origin: bottom right;
+            transition: transform 0.3s ease-out;
+        }
+        
+        nav a:hover {
+            color: var(--accent-primary);
+        }
+
+        nav a:hover::after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+        
+        .main-content {
+            flex-grow: 1; 
+            padding: 60px 5%;
+            animation: fadeIn 1s ease-in-out;
+            box-sizing: border-box;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            font-size: 2.5em;
+            color: #fff;
+            border-bottom: 3px solid var(--accent-primary);
+            padding-bottom: 10px;
+            margin-bottom: 40px;
+            text-align: center;
+            display: inline-block; 
+        }
+        
+        .content-center {
+             display: flex;
+             flex-direction: column;
+             align-items: center;
+        }
+
+        .form-container {
+            background: var(--bg-glass);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 16px;
+            border: 1px solid var(--border-glass);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 500px;
+        }
+        
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        form input, form textarea {
+            padding: 15px;
+            border: 1px solid transparent;
+            border-radius: 8px;
+            outline: none;
+            background-color: rgba(13, 27, 42, 0.8);
+            color: #fff;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1em;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        form input:focus, form textarea:focus {
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 15px rgba(76, 201, 240, 0.3);
+        }
+        
+        form textarea {
+            resize: vertical;
+        }
+        
+        form button {
+            padding: 15px;
+            background: linear-gradient(45deg, var(--accent-secondary), var(--accent-primary));
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            color: #fff;
+            font-weight: bold;
+            font-size: 1.1em;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        form button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(76, 201, 240, 0.5);
+        }
+
+        footer {
+            background-color: var(--bg-dark-primary);
+            padding: 25px;
+            text-align: center;
+            color: var(--text-dark);
+            border-top: 1px solid var(--border-glass);
+            margin-top: 40px;
+        }
+
+         @media (max-width: 900px) {
+            body {
+                flex-direction: column;
+            }
+            .vertical-navbar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                flex-direction: row;
+                justify-content: space-around;
+                padding: 15px;
+            }
+             .logo {
+                 margin-bottom: 0;
+                 font-size: 1.5em;
+             }
+            nav {
+                flex-direction: row;
+                gap: 15px;
+            }
+             nav a {
+                 width: auto;
+                 padding: 5px 10px;
+             }
+        }
+
+    </style>
+</head>
+<body>
+
+    <aside class="vertical-navbar">
+        <h1 class="logo">Smart Drone</h1>
+        <nav>
+            <a href="#">Home</a>
+            <a href="#">Features</a>
+            <a href="#">Team</a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <div class="content-center">
+            <h2>Contact Us</h2>
+            <div class="form-container">
+                <form>
+                    <input type="text" placeholder="Your Name" required>
+                    <input type="email" placeholder="Your Email" required>
+                    <textarea rows="6" placeholder="Your Message" required></textarea>
+                    <button type="submit">Send Message</button>
+                </form>
+            </div>
+        </div>
+        <footer>
+            <p>© 2025 Smart Drone System. All rights reserved.</p>
+        </footer>
+    </main>
+
+</body>
+</html>
