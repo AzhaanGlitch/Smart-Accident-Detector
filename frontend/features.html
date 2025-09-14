@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Drone System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #0A0A1F; 
+            color: #e0e0f0;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .vertical-navbar {
+            width: 220px;
+            background-color: #060612; 
+            padding: 30px 0;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 2px 0 15px rgba(0, 0, 0, 0.7);
+            position: sticky;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            align-items: center;
+            overflow-y: auto;
+        }
+
+        .vertical-navbar .logo {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: #00CFFF;
+            margin-bottom: 50px;
+            text-align: center;
+            padding: 0 15px;
+            letter-spacing: 0.5px;
+        }
+
+        .vertical-navbar nav ul {
+            list-style: none;
+            padding: 0;
+            width: 100%;
+            text-align: center;
+        }
+
+        .vertical-navbar nav ul li {
+            margin-bottom: 25px;
+        }
+
+        .vertical-navbar nav ul li a {
+            text-decoration: none;
+            color: #a0a0c0;
+            font-size: 1.1em;
+            padding: 10px 20px;
+            display: block;
+            transition: color 0.3s ease, background-color 0.3s ease;
+            border-radius: 5px;
+        }
+
+        .vertical-navbar nav ul li a:hover,
+        .vertical-navbar nav ul li a.active {
+            color: #ffffff;
+            background-color: #1a2b3c;
+        }
+
+        /* Main Content Area */
+        .main-content {
+            flex-grow: 1;
+            padding: 40px 60px;
+        }
+
+        .main-content h1 {
+            font-size: 2.8em;
+            color: #00CFFF;
+            text-align: left;
+            margin-bottom: 50px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .main-content h1::after {
+            content: '';
+            position: absolute;
+            left: 10%;
+            bottom: 0;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(to right, #00CFFF, #4FC3F7);
+            border-radius: 2px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            background: linear-gradient(135deg, #1A2B42 0%, #2A3C53 100%); 
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            min-height: 220px;
+            position: relative;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px); 
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6), 
+                        0 0 25px 8px rgba(0, 200, 255, 0.5); 
+            border-color: rgba(0, 200, 255, 0.7);
+        }
+
+        .feature-card .icon {
+            font-size: 3.5em;
+            color: #4FC3F7;
+            margin-bottom: 20px;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5em;
+            color: #ffffff;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .feature-card p {
+            font-size: 0.95em;
+            color: #c0c0e0; 
+            line-height: 1.6;
+        }
+
+        @media (max-width: 900px) {
+            body {
+                flex-direction: column;
+            }
+            .vertical-navbar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+                padding: 15px 0;
+            }
+            .vertical-navbar nav ul {
+                display: flex;
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+            .vertical-navbar nav ul li {
+                margin-bottom: 0;
+            }
+            .vertical-navbar .logo {
+                margin-bottom: 20px;
+            }
+            .main-content {
+                padding: 30px 20px;
+            }
+            .main-content h1 {
+                font-size: 2.2em;
+                margin-bottom: 40px;
+            }
+            .features-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            }
+        }
+
+        @media (max-width: 600px) {
+            .main-content h1 {
+                font-size: 1.8em;
+                margin-bottom: 30px;
+            }
+            .feature-card {
+                padding: 25px;
+            }
+            .feature-card .icon {
+                font-size: 3em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <aside class="vertical-navbar">
+        <div class="logo">Smart Drone System</div>
+        <nav>
+            <ul>
+                <li><a href="#" class="active">Home</a></li>
+                <li><a href="#">Team</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <h1>FEATURES</h1>
+        <section class="features-grid">
+            <div class="feature-card">
+                <div class="icon"><i class="fas fa-bolt"></i></div>
+                <h3>Real-Time Accident Detection</h3>
+                <p>AI-powered model analyzes live drone video feeds and instantly identifies accidents.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon"><i class="fas fa-wifi"></i></div>
+                <h3>Drone Connectivity Dashboard</h3>
+                <p>Easy-to-use web interface to connect, monitor, and manage drones.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon"><i class="fas fa-video"></i></div>
+                <h3>Live Prediction Feed</h3>
+                <p>Displays accident/no-accident status with timestamps in real time.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon"><i class="fas fa-bell"></i></div>
+                <h3>Automated Alerts</h3>
+                <p>Immediate alerts when an accident is detected, ensuring faster response.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon"><i class="fas fa-history"></i></div>
+                <h3>Accident History Logs</h3>
+                <p>Keeps a record of past detections with time and drone ID for analysis.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon"><i class="fas fa-brain"></i></div>
+                <h3>Smart ML Model</h3>
+                <p>Deep learning models (CNN/YOLO) trained on accident datasets for accurate predictions.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon"><i class="fas fa-cloud"></i></div>
+                <h3>Scalable & Cloud-Hosted</h3>
+                <p>Runs seamlessly on cloud servers for 24/7 reliability.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon"><i class="fas fa-vr-cardboard"></i></div>
+                <h3>Simulation Mode</h3>
+                <p>Test the system with a simulated drone feed for demos and exhibitions.</p>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
