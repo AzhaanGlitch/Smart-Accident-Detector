@@ -216,7 +216,6 @@ document.addEventListener('DOMContentLoaded', () => {
     setInterval(updateDroneFleet, 7000);
   }
 
-  // 🔹 Auto-run initializeDashboard if dashboard exists
   if (dashboard) {
     initializeDashboard();
   }
