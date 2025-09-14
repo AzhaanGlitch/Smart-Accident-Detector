@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Drone System - Our Team</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark-primary: #10122B; 
+            --bg-dark-secondary: #0C0E20;
+            --card-bg-start: #1A1D3A;
+            --card-bg-end: #272A4F;
+            --accent-bright: #00E0FF;
+            --accent-secondary: #4FC3F7; 
+            --text-light: #E0E6F0; 
+            --text-subtle: #AAB7C6;
+            --profile-border-color: #00BFFF; 
+            --social-icon-bg: #00E0FF; 
+            --hover-card-bg: #1A2247;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-dark-primary);
+            color: var(--text-light);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .vertical-navbar {
+            width: 220px;
+            min-width: 220px;
+            background-color: var(--bg-dark-secondary);
+            padding: 30px 0;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 2px 0 15px rgba(0, 0, 0, 0.7);
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            align-items: center;
+            overflow-y: auto;
+            z-index: 100;
+        }
+
+        .vertical-navbar .logo {
+            font-size: 1.8em;
+            font-weight: 800;
+            color: var(--accent-bright);
+            margin-bottom: 50px;
+            text-align: center;
+            padding: 0 15px;
+            letter-spacing: 0.5px;
+            line-height: 1.2;
+        }
+
+        .vertical-navbar nav ul {
+            list-style: none;
+            padding: 0;
+            width: 100%;
+            text-align: center;
+        }
+
+        .vertical-navbar nav ul li {
+            margin-bottom: 25px;
+        }
+
+        .vertical-navbar nav ul li a {
+            text-decoration: none;
+            color: var(--text-subtle);
+            font-size: 1.1em;
+            padding: 10px 20px;
+            display: block;
+            transition: color 0.3s ease;
+            border-radius: 5px;
+        }
+
+        .vertical-navbar nav ul li a:hover,
+        .vertical-navbar nav ul li a.active {
+            color: var(--text-light);
+        }
+
+        .main-content {
+            margin-left: 220px; 
+            flex-grow: 1;
+            padding: 40px 60px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: var(--bg-dark-primary);
+            min-height: 100vh;
+        }
+
+        .section-heading {
+            font-size: 2.8em;
+            color: var(--accent-bright);
+            text-align: left;
+            margin-bottom: 50px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+            padding-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .section-heading::after {
+            content: '';
+            position: absolute;
+            left: 10%;
+            bottom: 0;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(to right, var(--accent-bright), var(--accent-secondary));
+            border-radius: 2px;
+        }
+
+        .team-section {
+            padding: 20px 0;
+            max-width: 1100px;
+            margin: 0 auto;
+            width: 100%;
+            flex-grow: 1;
+        }
+
+        .team-grid {
+            display: flex;
+            flex-wrap: nowrap;
+            justify-content: center;
+            align-items: stretch;
+            gap: 20px;
+        }
+
+        .team-card {
+            flex: 1;
+            max-width: 260px;
+            min-width: 200px;
+            background: linear-gradient(135deg, var(--card-bg-start) 0%, var(--card-bg-end) 100%);
+            border-radius: 20px;
+            padding: 30px 20px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease-in-out, background 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            min-height: 320px;
+            justify-content: space-between;
+        }
+
+        .team-card:hover {
+            transform: translateY(0);
+            background: var(--hover-card-bg);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .profile-picture {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            overflow: hidden;
+            background-color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+            position: relative;
+            box-shadow: 0 0 0 3px var(--profile-border-color);
+            transition: box-shadow 0.3s ease;
+        }
+
+        .profile-picture img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            display: block;
+        }
+        
+        .member-name-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+            min-height: 25px;
+        }
+
+        .member-name-wrapper .indicator {
+            width: 8px;
+            height: 8px;
+            background-color: var(--accent-secondary);
+            border-radius: 50%;
+            margin-left: 8px;
+            animation: pulse 1.5s infinite ease-in-out;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.8); opacity: 0.7; }
+            50% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(0.8); opacity: 0.7; }
+        }
+
+        .team-card h4 {
+            font-size: 1.1em;
+            color: var(--accent-bright);
+            margin: 0;
+            font-weight: 700;
+            text-transform: uppercase;
+            line-height: 1.2;
+        }
+
+        .team-card p {
+            font-size: 0.8em;
+            color: var(--text-subtle);
+            margin: 3px 0;
+            line-height: 1.4;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: auto;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            padding-top: 20px;
+        }
+
+        .team-card:hover .social-links {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .social-links .social-icon {
+            width: 40px;
+            height: 40px;
+            background-color: var(--social-icon-bg);
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #ffffff;
+            font-size: 1.3em;
+            text-decoration: none;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            box-shadow: 0 0 10px rgba(0, 224, 255, 0.4);
+        }
+
+        .social-links .social-icon:hover {
+            background-color: var(--accent-secondary);
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(0, 224, 255, 0.7);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: auto; 
+            font-size: 0.9em;
+            color: #70708f;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            width: 100%;
+            box-sizing: border-box;
+            background-color: var(--bg-dark-primary);
+        }
+
+        @media (max-width: 1400px) {
+            .team-grid {
+                gap: 15px;
+            }
+            .team-card {
+                max-width: 240px;
+                min-width: 180px;
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .team-grid {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .team-card {
+                flex: 0 0 calc(33.333% - 15px);
+                max-width: 300px;
+            }
+        }
+
+        @media (max-width: 900px) {
+            body {
+                flex-direction: column;
+            }
+            .vertical-navbar {
+                width: 100%;
+                min-width: 100%;
+                height: auto;
+                position: relative;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+                padding: 15px 0;
+            }
+            .vertical-navbar nav ul {
+                display: flex;
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+            .vertical-navbar nav ul li {
+                margin-bottom: 0;
+            }
+            .vertical-navbar .logo {
+                margin-bottom: 20px;
+            }
+            .main-content {
+                margin-left: 0;
+                padding: 30px 20px;
+            }
+            .section-heading {
+                font-size: 2.2em;
+                margin-bottom: 40px;
+            }
+            .team-card {
+                flex: 0 0 calc(50% - 15px);
+                max-width: 350px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .section-heading {
+                font-size: 1.8em;
+                margin-bottom: 30px;
+            }
+            .team-card {
+                flex: 0 0 calc(100% - 20px);
+                padding: 25px 15px;
+            }
+            .profile-picture {
+                width: 80px;
+                height: 80px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <aside class="vertical-navbar">
+        <div class="logo">Smart<br>Drone<br>System</div>
+        <nav>
+            <ul>
+                <li><a href="#" class="active">Team</a></li>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Features</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <section id="team-section" class="team-section">
+            <h1 class="section-heading">OUR TEAM</h1>
+            <div class="team-grid">
+                <div class="team-card">
+                    <div class="profile-picture">
+                        <img src="/frontend/team_members/azhaan.jpg" alt="Azhaan Ali Siddiqui">
+                    </div>
+                    <div class="member-name-wrapper">
+                        <h4>AZHAAN ALI SIDDIQUI</h4>
+                        <span class="indicator"></span>
+                    </div>
+                    <p>24BSA10234 | CSE | CLOUD</p>
+                    <p>FRONTEND | ML | VERSION CONTROLLING</p>
+                    <div class="social-links">
+                        <a href="https://github.com/AzhaanGlitch" target="_blank" class="social-icon github"><i class="fab fa-github"></i></a>
+                        <a href="https://www.linkedin.com/in/azhaanalisiddiqui/" target="_blank" class="social-icon linkedin"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+
+                <div class="team-card">
+                    <div class="profile-picture">
+                        <img src="/frontend/team_members/anshuman.jpg" alt="Anshuman Mohapatra">
+                    </div>
+                    <div class="member-name-wrapper">
+                        <h4>ANSHUMAN MOHAPATRA</h4>
+                    </div>
+                    <p>24BSA10287 | CSE | CLOUD</p>
+                    <p>FRONTEND</p>
+                    <div class="social-links">
+                        <a href="#" target="_blank" class="social-icon github"><i class="fab fa-github"></i></a>
+                        <a href="https://www.linkedin.com/in/anshuman-mohapatra-3aab24325?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank" class="social-icon linkedin"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+
+                <div class="team-card">
+                    <div class="profile-picture">
+                        <img src="/frontend/team_members/shresth.jpg" alt="Shresth Bhargava">
+                    </div>
+                    <div class="member-name-wrapper">
+                        <h4>SHRESTH BHARGAVA</h4>
+                    </div>
+                    <p>24BSA10161 | CSE | CLOUD</p>
+                    <p>BACKEND | FLASK</p>
+                    <div class="social-links">
+                        <a href="https://github.com/shresthbhargava" target="_blank" class="social-icon github"><i class="fab fa-github"></i></a>
+                        <a href="https://www.linkedin.com/in/shresth-bhargava/" target="_blank" class="social-icon linkedin"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+
+                <div class="team-card">
+                    <div class="profile-picture">
+                        <img src="/frontend/team_members/adhya.jpg" alt="Adhya Sparsh">
+                    </div>
+                    <div class="member-name-wrapper">
+                        <h4>ADHYA SPARSH</h4>
+                    </div>
+                    <p>24BSA10319 | CSE | CLOUD</p>
+                    <p>MACHINE LEARNING</p>
+                    <div class="social-links">
+                        <a href="#" target="_blank" class="social-icon github"><i class="fab fa-github"></i></a>
+                        <a href="#" target="_blank" class="social-icon linkedin"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+
+                <div class="team-card">
+                    <div class="profile-picture">
+                        <img src="/frontend/team_members/arpita.png" alt="Arpita">
+                    </div>
+                    <div class="member-name-wrapper">
+                        <h4>ARPITA</h4>
+                    </div>
+                    <p>24BSA10276 | CSE | CLOUD</p>
+                    <p>CONTENT</p>
+                    <div class="social-links">
+                        <a href="#" target="_blank" class="social-icon github"><i class="fab fa-github"></i></a>
+                        <a href="#" target="_blank" class="social-icon linkedin"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="footer">
+            © 2025 Smart Drone System. All rights reserved.
+        </footer>
+    </main>
+</body>
+</html>
