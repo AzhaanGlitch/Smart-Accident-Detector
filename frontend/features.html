@@ -45,11 +45,17 @@
         .brand-icon {
             width: 40px;
             height: 40px;
-            background: linear-gradient(135deg, #4fc3f7, #00e0ff);
-            border-radius: 8px;
-            display: flex;
+            border-radius: 50%;
+            display: inline-block;
             align-items: center;
             justify-content: center;
+            overflow: hidden;
+            background: #ffffff;
+        }
+
+        #drone-logo{
+            height: 40px;
+            width: 40px;
         }
 
         .brand-title {
@@ -256,7 +262,9 @@
     <aside class="sidebar">
         <div class="sidebar-header">
             <div class="brand">
-                <div class="brand-icon"></div>
+                <div class="brand-icon">
+                    <img src="/frontend/drone-logo.jpg" alt="Drone Logo" id="drone-logo"/>
+                </div>
                 <div>
                     <div class="brand-title">Smart Drone</div>
                     <small class="brand-subtitle">Dispatcher System</small>
