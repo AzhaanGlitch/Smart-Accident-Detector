@@ -189,25 +189,27 @@
             min-width: 200px;
             background: linear-gradient(135deg, var(--card-bg-start) 0%, var(--card-bg-end) 100%);
             border-radius: 20px;
-            padding: 30px 20px;
+            padding: 30px 20px 20px 20px;
             text-align: center;
             border: 1px solid rgba(255, 255, 255, 0.05);
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s ease-in-out, background 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             flex-direction: column;
             align-items: center;
             position: relative;
             overflow: hidden;
-            min-height: 320px;
-            justify-content: space-between;
+            justify-content: flex-start;
+            height: 280px;
         }
 
         .team-card:hover {
-            transform: translateY(0);
+            transform: translateY(-5px);
             background: var(--hover-card-bg);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
             border-color: rgba(255, 255, 255, 0.1);
+            height: 280px;
+            padding-bottom: 60px;
         }
 
         .profile-picture {
@@ -284,19 +286,21 @@
         }
 
         .social-links {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
             display: flex;
             justify-content: center;
             gap: 15px;
-            margin-top: auto;
             opacity: 0;
-            transform: translateY(10px);
-            transition: opacity 0.3s ease, transform 0.3s ease;
-            padding-top: 20px;
+            visibility: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .team-card:hover .social-links {
             opacity: 1;
-            transform: translateY(0);
+            visibility: visible;
         }
 
         .social-links .social-icon {
@@ -310,7 +314,7 @@
             color: #ffffff;
             font-size: 1.3em;
             text-decoration: none;
-            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            transition: all 0.3s ease;
             box-shadow: 0 0 10px rgba(0, 224, 255, 0.4);
         }
 
@@ -427,7 +431,7 @@
         <div class="sidebar-header">
             <div class="brand">
                 <div class="brand-icon">
-                    <img src="/frontend/drone-logo.jpg" alt="Drone Logo" id="drone-logo"/>
+                    <img src="https://via.placeholder.com/40x40/00E0FF/ffffff?text=D" alt="Drone Logo" id="drone-logo"/>
                 </div>
                 <div>
                     <div class="brand-title">SAD</div>
@@ -451,7 +455,7 @@
             <div class="team-grid">
                 <div class="team-card">
                     <div class="profile-picture">
-                        <img src="/frontend/team_members/azhaan.jpg" alt="Azhaan Ali Siddiqui">
+                        <img src="https://via.placeholder.com/100x100/4FC3F7/ffffff?text=AS" alt="Azhaan Ali Siddiqui">
                     </div>
                     <div class="member-name-wrapper">
                         <h4>AZHAAN ALI SIDDIQUI</h4>
@@ -469,7 +473,7 @@
 
                 <div class="team-card">
                     <div class="profile-picture">
-                        <img src="/frontend/team_members/anshuman.jpg" alt="Anshuman Mohapatra">
+                        <img src="https://via.placeholder.com/100x100/4FC3F7/ffffff?text=AM" alt="Anshuman Mohapatra">
                     </div>
                     <div class="member-name-wrapper">
                         <h4>ANSHUMAN MOHAPATRA</h4>
@@ -485,7 +489,7 @@
 
                 <div class="team-card">
                     <div class="profile-picture">
-                        <img src="/frontend/team_members/shresth.jpg" alt="Shresth Bhargava">
+                        <img src="https://via.placeholder.com/100x100/4FC3F7/ffffff?text=SB" alt="Shresth Bhargava">
                     </div>
                     <div class="member-name-wrapper">
                         <h4>SHRESTH BHARGAVA</h4>
@@ -502,7 +506,7 @@
 
                 <div class="team-card">
                     <div class="profile-picture">
-                        <img src="/frontend/team_members/adhya.jpg" alt="Adhya Sparsh">
+                        <img src="https://via.placeholder.com/100x100/4FC3F7/ffffff?text=AS" alt="Adhya Sparsh">
                     </div>
                     <div class="member-name-wrapper">
                         <h4>ADHYA SPARSH</h4>
@@ -517,7 +521,7 @@
 
                 <div class="team-card">
                     <div class="profile-picture">
-                        <img src="/frontend/team_members/arpita.png" alt="Arpita">
+                        <img src="https://via.placeholder.com/100x100/4FC3F7/ffffff?text=A" alt="Arpita">
                     </div>
                     <div class="member-name-wrapper">
                         <h4>ARPITA</h4>
@@ -531,3 +535,7 @@
                 </div>
             </div>
         </section>
+    </main>
+</body>
+
+</html>
