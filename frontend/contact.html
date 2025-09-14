@@ -25,72 +25,96 @@
             display: flex; 
         }
 
-        .vertical-navbar {
-            width: 240px;
-            flex-shrink: 0; 
-            height: 100vh;
-            background: var(--bg-glass);
-            backdrop-filter: blur(10px);
-            border-right: 1px solid var(--border-glass);
-            position: sticky;
-            top: 0;
+        .sidebar {
+            width: 220px;
+            background: linear-gradient(180deg, #1a1d3a 0%, #2a2f5a 100%);
             display: flex;
             flex-direction: column;
-            align-items: center;
-            padding: 30px 0;
-            box-sizing: border-box;
-            z-index: 1000;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 2px 0 15px rgba(0, 0, 0, 0.3);
         }
 
-        .logo {
-            margin: 0;
-            font-size: 1.8em;
-            font-weight: 700;
-            color: var(--accent-primary);
-            text-align: center;
-            margin-bottom: 60px;
+        .sidebar-header {
+            padding: 2rem 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
-        
-        nav {
+
+        .brand {
             display: flex;
-            flex-direction: column; 
             align-items: center;
-            gap: 25px;
-            width: 100%;
+            gap: 1rem;
         }
 
-        nav a {
+        .brand-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #4fc3f7, #00e0ff);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .brand-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin: 0;
+            line-height: 1.2;
+        }
+
+        .brand-subtitle {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.75rem;
+            margin: 0;
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: 1rem 0;
+        }
+
+        .sidebar-nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar-nav li {
+            margin: 0.25rem 1rem;
+        }
+
+        .sidebar-nav a {
+            display: flex;
+            align-items: center;
+            padding: 0.875rem 1rem;
+            color: rgba(255, 255, 255, 0.8);
             text-decoration: none;
-            color: var(--text-light);
-            font-weight: 600;
-            transition: color 0.3s ease;
-            position: relative;
-            padding: 10px 20px;
-            width: 80%;
-            text-align: center;
-            box-sizing: border-box;
-        }
-        
-        nav a::after {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 2px;
-            bottom: 0;
-            left: 0;
-            background-color: var(--accent-primary);
-            transform: scaleX(0);
-            transform-origin: bottom right;
-            transition: transform 0.3s ease-out;
-        }
-        
-        nav a:hover {
-            color: var(--accent-primary);
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            font-size: 0.875rem;
+            font-weight: 500;
         }
 
-        nav a:hover::after {
-            transform: scaleX(1);
-            transform-origin: bottom left;
+        .sidebar-nav a:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            transform: translateX(4px);
+        }
+
+        .sidebar-nav a.active {
+            background: linear-gradient(135deg, #4fc3f7, #00e0ff);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(79, 195, 247, 0.3);
+        }
+
+        .sidebar-nav i {
+            margin-right: 0.75rem;
+            width: 16px;
+            text-align: center;
         }
         
         .main-content {
@@ -189,38 +213,50 @@
             body {
                 flex-direction: column;
             }
-            .vertical-navbar {
+            .sidebar {
                 width: 100%;
                 height: auto;
                 position: relative;
-                flex-direction: row;
-                justify-content: space-around;
-                padding: 15px;
             }
-             .logo {
-                 margin-bottom: 0;
-                 font-size: 1.5em;
-             }
-            nav {
-                flex-direction: row;
-                gap: 15px;
+            .sidebar-header {
+                padding: 1rem;
             }
-             nav a {
-                 width: auto;
-                 padding: 5px 10px;
-             }
+            .sidebar-nav {
+                padding: 0.5rem 0;
+            }
+            .sidebar-nav ul {
+                display: flex;
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+            .sidebar-nav li {
+                margin: 0;
+            }
         }
 
     </style>
 </head>
 <body>
 
-    <aside class="vertical-navbar">
-        <h1 class="logo">Smart Drone</h1>
-        <nav>
-            <a href="#">Home</a>
-            <a href="#">Features</a>
-            <a href="#">Team</a>
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="brand">
+                <div class="brand-icon"></div>
+                <div>
+                    <div class="brand-title">Smart Drone</div>
+                    <small class="brand-subtitle">Dispatcher System</small>
+                </div>
+            </div>
+        </div>
+        <nav class="sidebar-nav">
+            <ul>
+                <li><a href="#"><i></i> DASHBOARD</a></li>
+                <li><a href="/frontend/features.html"><i></i> FEATURES</a></li>
+                <li><a href="/frontend/team_members/members.html"><i></i> TEAM</a></li>
+                <li><a href="#" class="active"><i></i> CONTACT</a></li>
+                <li><a href="#"><i></i> HISTORY</a></li>
+            </ul>
         </nav>
     </aside>
 
@@ -237,7 +273,7 @@
             </div>
         </div>
         <footer>
-            <p>© 2025 Smart Drone System. All rights reserved.</p>
+            <p>Â© 2025 Smart Drone System. All rights reserved.</p>
         </footer>
     </main>
 
