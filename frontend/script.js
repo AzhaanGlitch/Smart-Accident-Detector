@@ -199,6 +199,9 @@ document.addEventListener('DOMContentLoaded', () => {
       e.preventDefault();
       dashboard.classList.add('d-none');
       loginPage.classList.remove('d-none');
+      setTimeout(() => {
+        window.location.href = url("/index.html");
+      }, 100);
     });
   }
 
