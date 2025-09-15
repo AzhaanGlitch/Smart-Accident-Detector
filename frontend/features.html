@@ -4,26 +4,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Drone System - Contact Us</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <title>Smart Drone System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --bg-dark-primary: #0d1b2a;
-            --bg-glass: rgba(27, 38, 59, 0.6);
-            --border-glass: rgba(255, 255, 255, 0.1);
-            --text-light: #e0e1dd;
-            --text-dark: #b0b3b8;
-            --accent-primary: #4cc9f0;
-            --accent-secondary: #38a3c7;
-        }
-
         body {
+            font-family: 'Inter', sans-serif;
             margin: 0;
-            font-family: 'Poppins', sans-serif;
-            background: var(--bg-dark-primary);
-            color: var(--text-light);
-            line-height: 1.6;
+            padding: 0;
+            background-color: #0A0A1F;
+            color: #e0e0f0;
             display: flex;
+            min-height: 100vh;
         }
 
         /* Mobile Menu Toggle Button */
@@ -34,7 +26,7 @@
             z-index: 1050;
             width: 40px;
             height: 40px;
-            background: var(--bg-glass);
+            background: #1e293b;
             border: none;
             border-radius: 8px;
             display: none;
@@ -49,7 +41,7 @@
         .mobile-menu-toggle span {
             width: 20px;
             height: 2px;
-            background: var(--text-light);
+            background: #e2e8f0;
             transition: all 0.3s ease;
         }
 
@@ -185,105 +177,83 @@
             text-align: center;
         }
 
+        /* Main Content Area */
         .main-content {
             flex-grow: 1;
-            padding: 60px 5%;
-            animation: fadeIn 1s ease-in-out;
-            box-sizing: border-box;
+            padding: 40px 60px;
         }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        h2 {
-            font-size: 2.5em;
-            color: #fff;
-            border-bottom: 3px solid var(--accent-primary);
+        .main-content h1 {
+            font-size: 2.8em;
+            color: #00CFFF;
+            text-align: left;
+            margin-bottom: 50px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
             padding-bottom: 10px;
-            margin-bottom: 40px;
-            text-align: center;
-            display: inline-block;
         }
 
-        .content-center {
+        .main-content h1::after {
+            content: '';
+            position: absolute;
+            left: 10%;
+            bottom: 0;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(to right, #00CFFF, #4FC3F7);
+            border-radius: 2px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            background: linear-gradient(135deg, #1A2B42 0%, #2A3C53 100%);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
             display: flex;
             flex-direction: column;
+            justify-content: flex-start;
             align-items: center;
+            min-height: 220px;
+            position: relative;
         }
 
-        .form-container {
-            background: var(--bg-glass);
-            backdrop-filter: blur(10px);
-            padding: 40px;
-            border-radius: 16px;
-            border: 1px solid var(--border-glass);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-            width: 100%;
-            max-width: 500px;
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6),
+                0 0 25px 8px rgba(0, 200, 255, 0.5);
+            border-color: rgba(0, 200, 255, 0.7);
         }
 
-        form {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
+        .feature-card .icon {
+            font-size: 3.5em;
+            color: #4FC3F7;
+            margin-bottom: 20px;
         }
 
-        form input,
-        form textarea {
-            padding: 15px;
-            border: 1px solid transparent;
-            border-radius: 8px;
-            outline: none;
-            background-color: rgba(13, 27, 42, 0.8);
-            color: #fff;
-            font-family: 'Poppins', sans-serif;
-            font-size: 1em;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        .feature-card h3 {
+            font-size: 1.5em;
+            color: #ffffff;
+            margin-bottom: 15px;
+            font-weight: 600;
         }
 
-        form input:focus,
-        form textarea:focus {
-            border-color: var(--accent-primary);
-            box-shadow: 0 0 15px rgba(76, 201, 240, 0.3);
-        }
-
-        form textarea {
-            resize: vertical;
-        }
-
-        form button {
-            padding: 15px;
-            background: linear-gradient(45deg, var(--accent-secondary), var(--accent-primary));
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            color: #fff;
-            font-weight: bold;
-            font-size: 1.1em;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        form button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 20px rgba(76, 201, 240, 0.5);
-        }
-
-        footer {
-            background-color: var(--bg-dark-primary);
-            padding: 25px;
-            text-align: center;
-            color: var(--text-dark);
-            border-top: 1px solid var(--border-glass);
-            margin-top: 40px;
+        .feature-card p {
+            font-size: 0.95em;
+            color: #c0c0e0;
+            line-height: 1.6;
         }
 
         /* ===================== RESPONSIVE DESIGN ===================== */
@@ -291,17 +261,17 @@
         /* Medium screens (768px to 1199px) */
         @media (max-width: 1199px) and (min-width: 768px) {
             .main-content {
-                padding: 40px 4%;
+                padding: 30px 40px;
             }
 
-            h2 {
-                font-size: 2.2em;
-                margin-bottom: 30px;
+            .main-content h1 {
+                font-size: 2.4em;
+                margin-bottom: 40px;
             }
 
-            .form-container {
-                padding: 30px;
-                max-width: 450px;
+            .features-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 25px;
             }
         }
 
@@ -344,25 +314,38 @@
                 padding: 80px 20px 30px 20px;
             }
 
-            h2 {
-                font-size: 1.8em;
-                margin-bottom: 25px;
+            .main-content h1 {
+                font-size: 2.2em;
+                margin-bottom: 30px;
+                text-align: center;
             }
 
-            .form-container {
+            .main-content h1::after {
+                left: 50%;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .feature-card {
+                min-height: 180px;
                 padding: 25px;
-                max-width: 100%;
             }
 
-            form input,
-            form textarea {
-                padding: 12px;
-                font-size: 0.95em;
+            .feature-card .icon {
+                font-size: 3em;
+                margin-bottom: 15px;
             }
 
-            form button {
-                padding: 12px;
-                font-size: 1em;
+            .feature-card h3 {
+                font-size: 1.3em;
+                margin-bottom: 12px;
+            }
+
+            .feature-card p {
+                font-size: 0.9em;
             }
         }
 
@@ -379,24 +362,30 @@
                 padding: 70px 15px 30px 15px;
             }
 
-            h2 {
-                font-size: 1.6em;
-                margin-bottom: 20px;
+            .main-content h1 {
+                font-size: 1.8em;
+                margin-bottom: 25px;
             }
 
-            .form-container {
+            .features-grid {
+                gap: 15px;
+            }
+
+            .feature-card {
                 padding: 20px;
+                min-height: 160px;
             }
 
-            form input,
-            form textarea {
-                padding: 10px;
-                font-size: 0.9em;
+            .feature-card .icon {
+                font-size: 2.5em;
             }
 
-            form button {
-                padding: 10px;
-                font-size: 0.95em;
+            .feature-card h3 {
+                font-size: 1.2em;
+            }
+
+            .feature-card p {
+                font-size: 0.85em;
             }
         }
     </style>
@@ -428,25 +417,37 @@
         <nav class="sidebar-nav">
             <ul>
                 <li><a href="/base.html"><i></i> DASHBOARD</a></li>
-                <li><a href="#"><i></i> FEATURES</a></li>
+                <li><a href="#" class="active"><i></i> FEATURES</a></li>
                 <li><a href="/frontend/team_members/members.html"><i></i> TEAM</a></li>
-                <li><a href="/frontend/contact.html" class="active"><i></i> CONTACT</a></li>
+                <li><a href="/frontend/contact.html"><i></i> CONTACT</a></li>
             </ul>
         </nav>
     </aside>
 
     <main class="main-content">
-        <div class="content-center">
-            <h2>Contact Us</h2>
-            <div class="form-container">
-                <form>
-                    <input type="text" placeholder="Your Name" required>
-                    <input type="email" placeholder="Your Email" required>
-                    <textarea rows="6" placeholder="Your Message" required></textarea>
-                    <button type="submit">Send Message</button>
-                </form>
+        <h1>FEATURES</h1>
+        <section class="features-grid">
+            <div class="feature-card">
+                <div class="icon"><i class="fas fa-bolt"></i></div>
+                <h3>Accident Detection</h3>
+                <p>AI-powered model analyzes accidents.</p>
             </div>
-        </div>
+            <div class="feature-card">
+                <div class="icon"><i class="fas fa-video"></i></div>
+                <h3>Live Prediction Feed</h3>
+                <p>Displays accident/no-accident status in real time.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon"><i class="fas fa-bell"></i></div>
+                <h3>Automated Alerts</h3>
+                <p>Immediate alerts when an accident is detected, ensuring faster response.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon"><i class="fas fa-brain"></i></div>
+                <h3>Smart ML Model</h3>
+                <p>Deep learning models trained on accident datasets for accurate predictions.</p>
+            </div>
+        </section>
     </main>
 
     <script>
