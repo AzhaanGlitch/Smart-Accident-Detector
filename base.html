@@ -10,9 +10,19 @@
   <link rel="icon" type="image/png" href="frontend/drone-logo.png">
 </head>
 <body data-theme="dark">
+  <!-- Mobile Menu Toggle -->
+  <button class="mobile-menu-toggle d-lg-none" id="mobileMenuToggle">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+
+  <!-- Mobile Overlay -->
+  <div class="mobile-overlay" id="mobileOverlay"></div>
+
   <div id="dashboard" class="dashboard-container">
     <!-- ===== Sidebar ===== -->
-    <aside class="sidebar">
+    <aside class="sidebar" id="sidebar">
       <div class="sidebar-header">
         <div class="brand">
           <div class="brand-icon">
@@ -51,9 +61,9 @@
             <span id="userGreeting" class="fw-bold text-info"></span>
 
             <button type="button" class="btn btn-outline-success">
-              <span style="color: #66ff00;">⚬ </span></i>Online
+              <span style="color: #66ff00;">⬢ </span>Online
             </button>
-            <button class="theme-toggle" aria-label="Toggle Theme">ðŸŒ™</button>
+            <button class="theme-toggle" aria-label="Toggle Theme">🌙</button>
           </div>
         </div>
       </header>
@@ -120,5 +130,3 @@
   <script src="frontend/script.js"></script>
 </body>
 </html>
-
-

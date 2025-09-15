@@ -4,18 +4,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Drone System</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <title>Smart Drone System - Contact Us</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --bg-dark-primary: #0d1b2a;
+            --bg-glass: rgba(27, 38, 59, 0.6);
+            --border-glass: rgba(255, 255, 255, 0.1);
+            --text-light: #e0e1dd;
+            --text-dark: #b0b3b8;
+            --accent-primary: #4cc9f0;
+            --accent-secondary: #38a3c7;
+        }
+
         body {
-            font-family: 'Inter', sans-serif;
             margin: 0;
-            padding: 0;
-            background-color: #0A0A1F;
-            color: #e0e0f0;
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg-dark-primary);
+            color: var(--text-light);
+            line-height: 1.6;
             display: flex;
-            min-height: 100vh;
+        }
+
+        /* Mobile Menu Toggle Button */
+        .mobile-menu-toggle {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1050;
+            width: 40px;
+            height: 40px;
+            background: var(--bg-glass);
+            border: none;
+            border-radius: 8px;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 4px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .mobile-menu-toggle span {
+            width: 20px;
+            height: 2px;
+            background: var(--text-light);
+            transition: all 0.3s ease;
+        }
+
+        .mobile-menu-toggle.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .mobile-menu-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .mobile-menu-toggle.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -6px);
+        }
+
+        /* Mobile Overlay */
+        .mobile-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1040;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-overlay.active {
+            opacity: 1;
+            visibility: visible;
         }
 
         .sidebar {
@@ -29,6 +95,7 @@
             height: 100vh;
             border-right: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 2px 0 15px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
         }
 
         .sidebar-header {
@@ -118,95 +185,150 @@
             text-align: center;
         }
 
-        /* Main Content Area */
         .main-content {
             flex-grow: 1;
-            padding: 40px 60px;
+            padding: 60px 5%;
+            animation: fadeIn 1s ease-in-out;
+            box-sizing: border-box;
         }
 
-        .main-content h1 {
-            font-size: 2.8em;
-            color: #00CFFF;
-            text-align: left;
-            margin-bottom: 50px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            position: relative;
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h2 {
+            font-size: 2.5em;
+            color: #fff;
+            border-bottom: 3px solid var(--accent-primary);
             padding-bottom: 10px;
-        }
-
-        .main-content h1::after {
-            content: '';
-            position: absolute;
-            left: 10%;
-            bottom: 0;
-            transform: translateX(-50%);
-            width: 100px;
-            height: 3px;
-            background: linear-gradient(to right, #00CFFF, #4FC3F7);
-            border-radius: 2px;
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .feature-card {
-            background: linear-gradient(135deg, #1A2B42 0%, #2A3C53 100%);
-            border-radius: 15px;
-            padding: 30px;
+            margin-bottom: 40px;
             text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
-            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+            display: inline-block;
+        }
+
+        .content-center {
             display: flex;
             flex-direction: column;
-            justify-content: flex-start;
             align-items: center;
-            min-height: 220px;
-            position: relative;
         }
 
-        .feature-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6),
-                0 0 25px 8px rgba(0, 200, 255, 0.5);
-            border-color: rgba(0, 200, 255, 0.7);
+        .form-container {
+            background: var(--bg-glass);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 16px;
+            border: 1px solid var(--border-glass);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 500px;
         }
 
-        .feature-card .icon {
-            font-size: 3.5em;
-            color: #4FC3F7;
-            margin-bottom: 20px;
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
 
-        .feature-card h3 {
-            font-size: 1.5em;
-            color: #ffffff;
-            margin-bottom: 15px;
-            font-weight: 600;
+        form input,
+        form textarea {
+            padding: 15px;
+            border: 1px solid transparent;
+            border-radius: 8px;
+            outline: none;
+            background-color: rgba(13, 27, 42, 0.8);
+            color: #fff;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1em;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .feature-card p {
-            font-size: 0.95em;
-            color: #c0c0e0;
-            line-height: 1.6;
+        form input:focus,
+        form textarea:focus {
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 15px rgba(76, 201, 240, 0.3);
         }
 
-        @media (max-width: 900px) {
+        form textarea {
+            resize: vertical;
+        }
+
+        form button {
+            padding: 15px;
+            background: linear-gradient(45deg, var(--accent-secondary), var(--accent-primary));
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            color: #fff;
+            font-weight: bold;
+            font-size: 1.1em;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        form button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(76, 201, 240, 0.5);
+        }
+
+        footer {
+            background-color: var(--bg-dark-primary);
+            padding: 25px;
+            text-align: center;
+            color: var(--text-dark);
+            border-top: 1px solid var(--border-glass);
+            margin-top: 40px;
+        }
+
+        /* ===================== RESPONSIVE DESIGN ===================== */
+
+        /* Medium screens (768px to 1199px) */
+        @media (max-width: 1199px) and (min-width: 768px) {
+            .main-content {
+                padding: 40px 4%;
+            }
+
+            h2 {
+                font-size: 2.2em;
+                margin-bottom: 30px;
+            }
+
+            .form-container {
+                padding: 30px;
+                max-width: 450px;
+            }
+        }
+
+        /* Small screens (767px and below) */
+        @media (max-width: 767px) {
             body {
-                flex-direction: column;
+                display: block;
+                position: relative;
+            }
+
+            .mobile-menu-toggle {
+                display: flex !important;
             }
 
             .sidebar {
-                width: 100%;
-                height: auto;
-                position: relative;
-                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+                position: fixed;
+                top: 0;
+                left: -220px;
+                width: 220px;
+                height: 100vh;
+                z-index: 1041;
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
             }
 
             .sidebar-header {
@@ -217,50 +339,81 @@
                 padding: 0.5rem 0;
             }
 
-            .sidebar-nav ul {
-                display: flex;
-                justify-content: center;
-                flex-wrap: wrap;
-                gap: 10px;
-            }
-
-            .sidebar-nav li {
-                margin: 0;
-            }
-
             .main-content {
-                padding: 30px 20px;
+                width: 100%;
+                padding: 80px 20px 30px 20px;
             }
 
-            .main-content h1 {
-                font-size: 2.2em;
-                margin-bottom: 40px;
+            h2 {
+                font-size: 1.8em;
+                margin-bottom: 25px;
             }
 
-            .features-grid {
-                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            .form-container {
+                padding: 25px;
+                max-width: 100%;
+            }
+
+            form input,
+            form textarea {
+                padding: 12px;
+                font-size: 0.95em;
+            }
+
+            form button {
+                padding: 12px;
+                font-size: 1em;
             }
         }
 
-        @media (max-width: 600px) {
-            .main-content h1 {
-                font-size: 1.8em;
-                margin-bottom: 30px;
+        /* Extra small screens (480px and below) */
+        @media (max-width: 480px) {
+            .mobile-menu-toggle {
+                top: 15px;
+                left: 15px;
+                width: 35px;
+                height: 35px;
             }
 
-            .feature-card {
-                padding: 25px;
+            .main-content {
+                padding: 70px 15px 30px 15px;
             }
 
-            .feature-card .icon {
-                font-size: 3em;
+            h2 {
+                font-size: 1.6em;
+                margin-bottom: 20px;
+            }
+
+            .form-container {
+                padding: 20px;
+            }
+
+            form input,
+            form textarea {
+                padding: 10px;
+                font-size: 0.9em;
+            }
+
+            form button {
+                padding: 10px;
+                font-size: 0.95em;
             }
         }
     </style>
 </head>
 
 <body>
-    <aside class="sidebar">
+    <!-- Mobile Menu Toggle -->
+    <button class="mobile-menu-toggle" id="mobileMenuToggle">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    <!-- Mobile Overlay -->
+    <div class="mobile-overlay" id="mobileOverlay"></div>
+
+    <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <div class="brand">
                 <div class="brand-icon">
@@ -275,38 +428,82 @@
         <nav class="sidebar-nav">
             <ul>
                 <li><a href="/base.html"><i></i> DASHBOARD</a></li>
-                <li><a href="#" class="active"><i></i> FEATURES</a></li>
+                <li><a href="/frontend/features.html"><i></i> FEATURES</a></li>
                 <li><a href="/frontend/team_members/members.html"><i></i> TEAM</a></li>
-                <li><a href="/frontend/contact.html"><i></i> CONTACT</a></li>
+                <li><a href="#" class="active"><i></i> CONTACT</a></li>
             </ul>
         </nav>
     </aside>
 
     <main class="main-content">
-        <h1>FEATURES</h1>
-        <section class="features-grid">
-            <div class="feature-card">
-                <div class="icon"><i class="fas fa-bolt"></i></div>
-                <h3>Accident Detection</h3>
-                <p>AI-powered model analyzes accidents.</p>
+        <div class="content-center">
+            <h2>Contact Us</h2>
+            <div class="form-container">
+                <form>
+                    <input type="text" placeholder="Your Name" required>
+                    <input type="email" placeholder="Your Email" required>
+                    <textarea rows="6" placeholder="Your Message" required></textarea>
+                    <button type="submit">Send Message</button>
+                </form>
             </div>
-            <div class="feature-card">
-                <div class="icon"><i class="fas fa-video"></i></div>
-                <h3>Live Prediction Feed</h3>
-                <p>Displays accident/no-accident status in real time.</p>
-            </div>
-            <div class="feature-card">
-                <div class="icon"><i class="fas fa-bell"></i></div>
-                <h3>Automated Alerts</h3>
-                <p>Immediate alerts when an accident is detected, ensuring faster response.</p>
-            </div>
-            <div class="feature-card">
-                <div class="icon"><i class="fas fa-brain"></i></div>
-                <h3>Smart ML Model</h3>
-                <p>Deep learning models trained on accident datasets for accurate predictions.</p>
-            </div>
-        </section>
+        </div>
     </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+            const mobileOverlay = document.getElementById('mobileOverlay');
+            const sidebar = document.getElementById('sidebar');
+
+            function toggleMobileMenu() {
+                if (mobileMenuToggle && sidebar && mobileOverlay) {
+                    const isActive = sidebar.classList.contains('active');
+                    
+                    if (isActive) {
+                        sidebar.classList.remove('active');
+                        mobileOverlay.classList.remove('active');
+                        mobileMenuToggle.classList.remove('active');
+                        document.body.style.overflow = '';
+                    } else {
+                        sidebar.classList.add('active');
+                        mobileOverlay.classList.add('active');
+                        mobileMenuToggle.classList.add('active');
+                        document.body.style.overflow = 'hidden';
+                    }
+                }
+            }
+
+            function closeMobileMenu() {
+                if (sidebar && mobileOverlay && mobileMenuToggle) {
+                    sidebar.classList.remove('active');
+                    mobileOverlay.classList.remove('active');
+                    mobileMenuToggle.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+            }
+
+            if (mobileMenuToggle) {
+                mobileMenuToggle.addEventListener('click', toggleMobileMenu);
+            }
+
+            if (mobileOverlay) {
+                mobileOverlay.addEventListener('click', closeMobileMenu);
+            }
+
+            if (sidebar) {
+                const sidebarLinks = sidebar.querySelectorAll('.sidebar-nav a');
+                sidebarLinks.forEach(link => {
+                    link.addEventListener('click', closeMobileMenu);
+                });
+            }
+
+            window.addEventListener('resize', () => {
+                if (window.innerWidth >= 768) {
+                    closeMobileMenu();
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>

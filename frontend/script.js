@@ -6,6 +6,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const body = document.body;
   const logoutBtn = document.getElementById('logoutBtn');
 
+  // Mobile menu elements
+  const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+  const mobileOverlay = document.getElementById('mobileOverlay');
+  const sidebar = document.getElementById('sidebar');
+
   // Upload elements
   const fileUpload = document.getElementById('fileUpload');
   const fileNameDisplay = document.getElementById('fileNameDisplay');
@@ -14,6 +19,60 @@ document.addEventListener('DOMContentLoaded', () => {
   const resultImage = document.getElementById('resultImage');
   const resultVideo = document.getElementById('resultVideo');
   const resultsGrid = document.getElementById('resultsGrid');
+
+  // ================== MOBILE MENU ==================
+  function toggleMobileMenu() {
+    if (mobileMenuToggle && sidebar && mobileOverlay) {
+      const isActive = sidebar.classList.contains('active');
+      
+      if (isActive) {
+        // Close menu
+        sidebar.classList.remove('active');
+        mobileOverlay.classList.remove('active');
+        mobileMenuToggle.classList.remove('active');
+        document.body.style.overflow = '';
+      } else {
+        // Open menu
+        sidebar.classList.add('active');
+        mobileOverlay.classList.add('active');
+        mobileMenuToggle.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+    }
+  }
+
+  function closeMobileMenu() {
+    if (sidebar && mobileOverlay && mobileMenuToggle) {
+      sidebar.classList.remove('active');
+      mobileOverlay.classList.remove('active');
+      mobileMenuToggle.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+  }
+
+  // Mobile menu event listeners
+  if (mobileMenuToggle) {
+    mobileMenuToggle.addEventListener('click', toggleMobileMenu);
+  }
+
+  if (mobileOverlay) {
+    mobileOverlay.addEventListener('click', closeMobileMenu);
+  }
+
+  // Close mobile menu when clicking on sidebar links
+  if (sidebar) {
+    const sidebarLinks = sidebar.querySelectorAll('.sidebar-nav a');
+    sidebarLinks.forEach(link => {
+      link.addEventListener('click', closeMobileMenu);
+    });
+  }
+
+  // Close mobile menu on window resize if screen becomes large
+  window.addEventListener('resize', () => {
+    if (window.innerWidth >= 768) {
+      closeMobileMenu();
+    }
+  });
 
   // ================== THEME ==================
   const savedTheme = localStorage.getItem('skywatch-theme');
@@ -48,9 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
         callback: (response) => {
           console.log("Google login response:", response);
           if (response && response.code) {
-            // Store a placeholder Google name (replace later with real fetch)
             localStorage.setItem('googleName', 'Google User');
-
             googleBtn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span> Redirecting...`;
             googleBtn.disabled = true;
             setTimeout(() => {
@@ -149,7 +206,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const saveNameBtn = document.getElementById('saveNameBtn');
   const userNameInput = document.getElementById('userNameInput');
 
-  // Try to get Google name if available
   const googleName = localStorage.getItem('googleName');
 
   function checkUserName() {
@@ -158,7 +214,7 @@ document.addEventListener('DOMContentLoaded', () => {
       userGreeting.textContent = `Hi ${savedName}`;
     } else if (nameModal) {
       if (googleName) {
-        userNameInput.value = googleName; // Pre-fill with Google name
+        userNameInput.value = googleName;
       }
       nameModal.show();
     }
@@ -190,9 +246,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  function updateLiveFeed() { /* keep as before */ }
-  function updateAlerts() { /* keep as before */ }
-  function updateDroneFleet() { /* keep as before */ }
+  function updateLiveFeed() { 
+    // Placeholder for live feed updates
+  }
+  
+  function updateAlerts() { 
+    // Placeholder for alerts updates
+  }
+  
+  function updateDroneFleet() { 
+    // Placeholder for drone fleet updates
+  }
 
   if (logoutBtn) {
     logoutBtn.addEventListener('click', (e) => {
@@ -209,7 +273,7 @@ document.addEventListener('DOMContentLoaded', () => {
     updateLiveFeed();
     updateAlerts();
     updateDroneFleet();
-    checkUserName(); // 🔹 ask/show name here
+    checkUserName();
 
     setInterval(updateSystemStats, 5000);
     setInterval(updateLiveFeed, 3000);
@@ -220,4 +284,28 @@ document.addEventListener('DOMContentLoaded', () => {
   if (dashboard) {
     initializeDashboard();
   }
+
+  // ================== RESPONSIVE IMAGE/VIDEO HANDLING ==================
+  function handleResponsiveMedia() {
+    const mediaElements = document.querySelectorAll('.preview-img, .preview-video, .result-media');
+    
+    mediaElements.forEach(element => {
+      if (window.innerWidth <= 480) {
+        element.style.maxWidth = '100%';
+        element.style.maxHeight = '200px';
+      } else if (window.innerWidth <= 767) {
+        element.style.maxWidth = '100%';
+        element.style.maxHeight = '220px';
+      } else {
+        element.style.maxWidth = '400px';
+        element.style.maxHeight = '250px';
+      }
+    });
+  }
+
+  // Handle responsive media on window resize
+  window.addEventListener('resize', handleResponsiveMedia);
+  
+  // Initial call
+  handleResponsiveMedia();
 });
