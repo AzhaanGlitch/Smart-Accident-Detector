@@ -10,18 +10,15 @@
   <link rel="icon" type="image/png" href="frontend/drone-logo.png">
 </head>
 <body data-theme="dark">
-  <!-- Mobile Menu Toggle -->
-  <button class="mobile-menu-toggle d-lg-none" id="mobileMenuToggle">
+  <button class="mobile-menu-toggle" id="mobileMenuToggle">
     <span></span>
     <span></span>
     <span></span>
   </button>
 
-  <!-- Mobile Overlay -->
   <div class="mobile-overlay" id="mobileOverlay"></div>
 
   <div id="dashboard" class="dashboard-container">
-    <!-- ===== Sidebar ===== -->
     <aside class="sidebar" id="sidebar">
       <div class="sidebar-header">
         <div class="brand">
@@ -48,7 +45,6 @@
       </div>
     </aside>
 
-    <!-- ===== Main Content ===== -->
     <main class="main-content">
       <header class="main-header">
         <div class="header-content">
@@ -57,7 +53,6 @@
             <p>Real-time accident predictions</p>
           </div>
           <div class="header-status d-flex align-items-center gap-3">
-            <!-- Greeting here -->
             <span id="userGreeting" class="fw-bold text-info"></span>
 
             <button type="button" class="btn btn-outline-success">
@@ -68,7 +63,6 @@
         </div>
       </header>
 
-      <!-- Upload Section -->
       <section class="upload-section p-4">
         <div class="content-card">
           <div class="card-header">
@@ -85,7 +79,6 @@
           </div>
         </div>
 
-        <!-- Prediction Results -->
         <div id="predictionBox" class="content-card mt-4" style="display:none;">
           <div class="card-header">
             <span class="card-title">Prediction Results</span>
@@ -108,7 +101,6 @@
     </main>
   </div>
 
-  <!-- ===== Modal for Name Input ===== -->
   <div class="modal fade" id="nameModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content bg-dark text-light">
@@ -125,7 +117,6 @@
     </div>
   </div>
 
-  <!-- Bootstrap + JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script src="frontend/script.js"></script>
 </body>
