@@ -204,20 +204,27 @@ document.addEventListener('DOMContentLoaded', () => {
         // Display results from backend
         resultsGrid.innerHTML = '';
         
-        // Create result cards based on backend response
-        const outcomes = {
-          'Accident Status': result.accident_detected ? '🚨 Accident Detected' : '✅ No Accident',
-          'Confidence Score': `${Math.round(result.confidence * 100)}%`,
-          'Processing Time': `${result.processing_time || 'N/A'}`,
-          'Model Version': result.model_version || 'v1.0'
-        };
-
-        // Add any additional fields from backend response
-        if (result.severity) {
-          outcomes['Severity Level'] = result.severity;
-        }
-        if (result.vehicle_count) {
-          outcomes['Number of Vehicles'] = result.vehicle_count;
+        // Handle your backend's response format
+        let outcomes = {};
+        
+        if (result.error) {
+          // Show error from backend
+          outcomes = {
+            'Status': '❌ Error',
+            'Message': result.error,
+            'Details': result.message || 'Check backend logs'
+          };
+        } else {
+          // Process successful prediction results
+          const finalModel = result.final_model || {};
+          const bestModel = result.best_model || {};
+          
+          outcomes = {
+            'Accident Status': result.accident_detected ? '🚨 Accident Detected' : '✅ No Accident',
+            'Final Model': `${finalModel.prediction || 'N/A'} (${Math.round(finalModel.confidence || 0)}%)`,
+            'Best Model': `${bestModel.prediction || 'N/A'} (${Math.round(bestModel.confidence || 0)}%)`,
+            'Location': result.location || 'N/A'
+          };
         }
 
         Object.entries(outcomes).forEach(([title, value]) => {
