@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const resultsGrid = document.getElementById('resultsGrid');
 
   // Backend API URL
-  const BACKEND_URL = 'https://smart-accident-detector-backend.onrender.com/predict';
+  const BACKEND_URL = 'https://smart-accident-detector-backend.onrender.com';
 
   // ================== MOBILE MENU ==================
   function toggleMobileMenu() {
