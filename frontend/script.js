@@ -162,7 +162,6 @@ document.addEventListener('DOMContentLoaded', () => {
       resultImage.style.display = 'none';
       resultVideo.style.display = 'none';
 
-      // Display the uploaded file
       if (file.type.startsWith('image')) {
         resultImage.src = URL.createObjectURL(file);
         resultImage.style.display = 'block';
@@ -175,7 +174,6 @@ document.addEventListener('DOMContentLoaded', () => {
         resultVideo.style.maxHeight = '250px';
       }
 
-      // Prepare form data for API request
       const formData = new FormData();
       formData.append('file', file);
 
@@ -183,7 +181,6 @@ document.addEventListener('DOMContentLoaded', () => {
         uploadBtn.disabled = true;
         uploadBtn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span> Processing...`;
 
-        // Make API call to backend
         const response = await fetch('https://smart-accident-detector-backend.onrender.com/predict', {
           method: 'POST',
           body: formData
@@ -195,7 +192,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const data = await response.json();
 
-        // Update results grid with backend response
         resultsGrid.innerHTML = '';
         Object.entries(data).forEach(([title, value]) => {
           const card = document.createElement('div');
