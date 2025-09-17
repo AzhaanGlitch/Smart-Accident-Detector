@@ -69,29 +69,87 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Close mobile menu on window resize if screen becomes large
   window.addEventListener('resize', () => {
-    if (window.innerWidth > 991) {
+    if (window.innerWidth >= 768) {
       closeMobileMenu();
     }
   });
 
-  // Theme toggle
+  // ================== THEME ==================
+  const savedTheme = localStorage.getItem('skywatch-theme');
+  body.setAttribute('data-theme', savedTheme || 'dark');
+  setThemeIcon();
+
   if (themeToggleBtn) {
     themeToggleBtn.addEventListener('click', () => {
-      body.dataset.theme = body.dataset.theme === 'dark' ? 'light' : 'dark';
+      const currentTheme = body.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      body.setAttribute('data-theme', newTheme);
+      localStorage.setItem('skywatch-theme', newTheme);
+      setThemeIcon();
     });
   }
 
-  // File upload change
+  function setThemeIcon() {
+    if (!themeToggleBtn) return;
+    themeToggleBtn.textContent =
+      body.getAttribute('data-theme') === 'dark' ? '☀️' : '🌙';
+  }
+
+  // ================== LOGIN BUTTONS ==================
+  const googleBtn = document.querySelector('.google-btn');
+  if (googleBtn) {
+    googleBtn.addEventListener('click', function () {
+      const codeClient = google.accounts.oauth2.initCodeClient({
+        client_id: '860294680521-pbqoefl46mkc5i17l2potqjaccdveatr.apps.googleusercontent.com',
+        scope: 'openid email profile',
+        ux_mode: 'popup',
+        redirect_uri: 'https://smart-accident-detector.vercel.app/index.html',
+        callback: (response) => {
+          console.log("Google login response:", response);
+          if (response && response.code) {
+            localStorage.setItem('googleName', 'Google User');
+            googleBtn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span> Redirecting...`;
+            googleBtn.disabled = true;
+            setTimeout(() => {
+              window.location.href = "base.html";
+            }, 2000);
+          } else {
+            console.error("Google login failed: No code received");
+          }
+        }
+      });
+      codeClient.requestCode();
+    });
+  }
+
+  const githubBtn = document.querySelector('.github-btn');
+  if (githubBtn) {
+    githubBtn.addEventListener('click', function () {
+      githubBtn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span> Redirecting...`;
+      githubBtn.disabled = true;
+      window.location.href = '/api/github/login';
+    });
+  }
+
+  // ================== FILE UPLOAD CONFIRMATION ==================
   if (fileUpload) {
-    fileUpload.addEventListener('change', (e) => {
-      const file = e.target.files[0];
-      if (file) {
-        fileNameDisplay.textContent = file.name;
+    fileUpload.addEventListener('change', () => {
+      const file = fileUpload.files[0];
+      if (file && fileNameDisplay) {
+        fileNameDisplay.textContent = `✅ File selected: ${file.name}`;
+      } else if (fileNameDisplay) {
+        fileNameDisplay.textContent = '';
       }
     });
   }
 
-  // Upload button click (modified with backend integration)
+  // ===== Auto-scroll helper =====
+  function smoothScrollIntoView(el) {
+    if (!el) return;
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  // ================== RUN TEST ==================
   if (uploadBtn) {
     uploadBtn.addEventListener('click', async () => {
       const file = fileUpload.files[0];
@@ -99,15 +157,12 @@ document.addEventListener('DOMContentLoaded', () => {
         alert('Please select an image or video first.');
         return;
       }
-      if (!file.type.startsWith('image/')) {
-        alert('Only images supported for now.');
-        return;
-      }
 
       predictionBox.style.display = 'block';
       resultImage.style.display = 'none';
       resultVideo.style.display = 'none';
 
+      // Display the uploaded file
       if (file.type.startsWith('image')) {
         resultImage.src = URL.createObjectURL(file);
         resultImage.style.display = 'block';
@@ -118,31 +173,31 @@ document.addEventListener('DOMContentLoaded', () => {
         resultVideo.style.display = 'block';
         resultVideo.style.maxWidth = '400px';
         resultVideo.style.maxHeight = '250px';
-        // Note: Backend video support can be added later
       }
 
+      // Prepare form data for API request
       const formData = new FormData();
       formData.append('file', file);
 
       try {
+        uploadBtn.disabled = true;
+        uploadBtn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span> Processing...`;
+
+        // Make API call to backend
         const response = await fetch('https://smart-accident-detector-backend.onrender.com/predict', {
           method: 'POST',
           body: formData
         });
 
-        if (!response.ok) throw new Error('Prediction failed');
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
 
         const data = await response.json();
 
-        const outcomes = {
-          'Accident Status': data.accident_detected ? 'Accident Detected' : 'No Accident',
-          'Final Model': `${data.final_model.prediction} (${data.final_model.confidence.toFixed(2)}%)`,
-          'Best Model': `${data.best_model.prediction} (${data.best_model.confidence.toFixed(2)}%)`,
-          'Location': data.location || 'N/A'
-        };
-
+        // Update results grid with backend response
         resultsGrid.innerHTML = '';
-        Object.entries(outcomes).forEach(([title, value]) => {
+        Object.entries(data).forEach(([title, value]) => {
           const card = document.createElement('div');
           card.className = 'result-card';
           card.innerHTML = `
@@ -154,23 +209,43 @@ document.addEventListener('DOMContentLoaded', () => {
 
         setTimeout(() => smoothScrollIntoView(predictionBox), 80);
       } catch (error) {
-        console.error('Error:', error);
-        alert('Failed to get prediction: ' + error.message);
+        console.error('Error during prediction:', error);
+        alert('An error occurred while processing the file. Please try again.');
+        resultsGrid.innerHTML = '';
+        const errorCard = document.createElement('div');
+        errorCard.className = 'result-card';
+        errorCard.innerHTML = `
+          <div class="result-title">Error</div>
+          <div class="result-value">Failed to process file</div>
+        `;
+        resultsGrid.appendChild(errorCard);
+      } finally {
+        uploadBtn.disabled = false;
+        uploadBtn.innerHTML = 'Run Test';
       }
     });
   }
 
-  // ================== NAME MODAL ==================
-  const nameModal = new bootstrap.Modal(document.getElementById('nameModal'));
+  // ================== GREETING (NAME INPUT) ==================
   const userGreeting = document.getElementById('userGreeting');
-  const userNameInput = document.getElementById('userNameInput');
+  const nameModalElement = document.getElementById('nameModal');
+  let nameModal = null;
+  if (nameModalElement) {
+    nameModal = new bootstrap.Modal(nameModalElement);
+  }
   const saveNameBtn = document.getElementById('saveNameBtn');
+  const userNameInput = document.getElementById('userNameInput');
+
+  const googleName = localStorage.getItem('googleName');
 
   function checkUserName() {
-    const storedName = localStorage.getItem('userName') || localStorage.getItem('googleName');
-    if (storedName) {
-      userGreeting.textContent = `Hi ${storedName}`;
-    } else {
+    const savedName = localStorage.getItem('userName');
+    if (savedName) {
+      userGreeting.textContent = `Hi ${savedName}`;
+    } else if (nameModal) {
+      if (googleName) {
+        userNameInput.value = googleName;
+      }
       nameModal.show();
     }
   }
