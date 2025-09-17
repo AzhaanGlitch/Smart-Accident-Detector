@@ -20,6 +20,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const resultVideo = document.getElementById('resultVideo');
   const resultsGrid = document.getElementById('resultsGrid');
 
+  // Backend API URL
+  const BACKEND_URL = 'https://smart-accident-detector-backend.onrender.com';
+
   // ================== MOBILE MENU ==================
   function toggleMobileMenu() {
     if (mobileMenuToggle && sidebar && mobileOverlay) {
@@ -149,19 +152,26 @@ document.addEventListener('DOMContentLoaded', () => {
     el.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
-  // ================== RUN TEST ==================
+  // ================== RUN TEST (BACKEND INTEGRATION) ==================
   if (uploadBtn) {
-    uploadBtn.addEventListener('click', () => {
+    uploadBtn.addEventListener('click', async () => {
       const file = fileUpload.files[0];
       if (!file) {
         alert('Please select an image or video first.');
         return;
       }
 
+      // Show loading state
+      uploadBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Processing...';
+      uploadBtn.disabled = true;
+
+      // Show prediction box with loading
       predictionBox.style.display = 'block';
       resultImage.style.display = 'none';
       resultVideo.style.display = 'none';
+      resultsGrid.innerHTML = '<div class="loading-text">Analyzing media... Please wait.</div>';
 
+      // Display the uploaded media
       if (file.type.startsWith('image')) {
         resultImage.src = URL.createObjectURL(file);
         resultImage.style.display = 'block';
@@ -174,25 +184,84 @@ document.addEventListener('DOMContentLoaded', () => {
         resultVideo.style.maxHeight = '250px';
       }
 
-      const outcomes = {
-        'Accident Status': Math.random() > 0.5 ? '🚨 Accident Detected' : '✅ No Accident',
-        'Severity Level': ['Minor', 'Moderate', 'Severe'][Math.floor(Math.random() * 3)],
-        'Number of Vehicles': Math.floor(Math.random() * 4) + 1,
-        'Confidence Score': `${Math.floor(Math.random() * 21) + 80}%`
-      };
+      try {
+        // Create FormData to send file to backend
+        const formData = new FormData();
+        formData.append('file', file);
 
-      resultsGrid.innerHTML = '';
-      Object.entries(outcomes).forEach(([title, value]) => {
-        const card = document.createElement('div');
-        card.className = 'result-card';
-        card.innerHTML = `
-          <div class="result-title">${title}</div>
-          <div class="result-value">${value}</div>
+        // Make API call to backend
+        const response = await fetch(`${BACKEND_URL}/predict`, {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const result = await response.json();
+        
+        // Display results from backend
+        resultsGrid.innerHTML = '';
+        
+        // Create result cards based on backend response
+        const outcomes = {
+          'Accident Status': result.accident_detected ? '🚨 Accident Detected' : '✅ No Accident',
+          'Confidence Score': `${Math.round(result.confidence * 100)}%`,
+          'Processing Time': `${result.processing_time || 'N/A'}`,
+          'Model Version': result.model_version || 'v1.0'
+        };
+
+        // Add any additional fields from backend response
+        if (result.severity) {
+          outcomes['Severity Level'] = result.severity;
+        }
+        if (result.vehicle_count) {
+          outcomes['Number of Vehicles'] = result.vehicle_count;
+        }
+
+        Object.entries(outcomes).forEach(([title, value]) => {
+          const card = document.createElement('div');
+          card.className = 'result-card';
+          card.innerHTML = `
+            <div class="result-title">${title}</div>
+            <div class="result-value">${value}</div>
+          `;
+          resultsGrid.appendChild(card);
+        });
+
+      } catch (error) {
+        console.error('Error calling backend API:', error);
+        
+        // Show error message
+        resultsGrid.innerHTML = `
+          <div class="result-card" style="border-color: #ef4444;">
+            <div class="result-title">Error</div>
+            <div class="result-value" style="color: #ef4444;">
+              Failed to process media. Please try again.
+            </div>
+          </div>
         `;
-        resultsGrid.appendChild(card);
-      });
-
-      setTimeout(() => smoothScrollIntoView(predictionBox), 80);
+        
+        // Optionally show more detailed error for debugging
+        if (error.message.includes('Failed to fetch')) {
+          resultsGrid.innerHTML += `
+            <div class="result-card" style="border-color: #f59e0b;">
+              <div class="result-title">Connection Issue</div>
+              <div class="result-value" style="color: #f59e0b; font-size: 14px;">
+                Unable to connect to backend server. Please check your internet connection.
+              </div>
+            </div>
+          `;
+        }
+      } finally {
+        // Reset button state
+        uploadBtn.innerHTML = 'Run Test';
+        uploadBtn.disabled = false;
+        
+        // Scroll to results
+        setTimeout(() => smoothScrollIntoView(predictionBox), 100);
+      }
     });
   }
 
