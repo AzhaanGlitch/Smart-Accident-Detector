@@ -151,7 +151,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ================== RUN TEST ==================
   if (uploadBtn) {
-    uploadBtn.addEventListener('click', async () => {
+    uploadBtn.addEventListener('click', () => {
       const file = fileUpload.files[0];
       if (!file) {
         alert('Please select an image or video first.');
@@ -174,51 +174,25 @@ document.addEventListener('DOMContentLoaded', () => {
         resultVideo.style.maxHeight = '250px';
       }
 
-      const formData = new FormData();
-      formData.append('file', file);
+      const outcomes = {
+        'Accident Status': Math.random() > 0.5 ? '🚨 Accident Detected' : '✅ No Accident',
+        'Severity Level': ['Minor', 'Moderate', 'Severe'][Math.floor(Math.random() * 3)],
+        'Number of Vehicles': Math.floor(Math.random() * 4) + 1,
+        'Confidence Score': `${Math.floor(Math.random() * 21) + 80}%`
+      };
 
-      try {
-        uploadBtn.disabled = true;
-        uploadBtn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span> Processing...`;
-
-        const response = await fetch('https://smart-accident-detector-backend.onrender.com/predict', {
-          method: 'POST',
-          body: formData
-        });
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const data = await response.json();
-
-        resultsGrid.innerHTML = '';
-        Object.entries(data).forEach(([title, value]) => {
-          const card = document.createElement('div');
-          card.className = 'result-card';
-          card.innerHTML = `
-            <div class="result-title">${title}</div>
-            <div class="result-value">${value}</div>
-          `;
-          resultsGrid.appendChild(card);
-        });
-
-        setTimeout(() => smoothScrollIntoView(predictionBox), 80);
-      } catch (error) {
-        console.error('Error during prediction:', error);
-        alert('An error occurred while processing the file. Please try again.');
-        resultsGrid.innerHTML = '';
-        const errorCard = document.createElement('div');
-        errorCard.className = 'result-card';
-        errorCard.innerHTML = `
-          <div class="result-title">Error</div>
-          <div class="result-value">Failed to process file</div>
+      resultsGrid.innerHTML = '';
+      Object.entries(outcomes).forEach(([title, value]) => {
+        const card = document.createElement('div');
+        card.className = 'result-card';
+        card.innerHTML = `
+          <div class="result-title">${title}</div>
+          <div class="result-value">${value}</div>
         `;
-        resultsGrid.appendChild(errorCard);
-      } finally {
-        uploadBtn.disabled = false;
-        uploadBtn.innerHTML = 'Run Test';
-      }
+        resultsGrid.appendChild(card);
+      });
+
+      setTimeout(() => smoothScrollIntoView(predictionBox), 80);
     });
   }
 

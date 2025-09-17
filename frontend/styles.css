@@ -50,7 +50,7 @@ body {
   background: var(--bg-card);
   border: none;
   border-radius: 8px;
-  display: none;
+  display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -1101,6 +1101,10 @@ body[data-theme="light"] .drone-card:hover {
 
 /* Medium screens (768px to 1199px) */
 @media (max-width: 1199px) and (min-width: 768px) {
+  .mobile-menu-toggle {
+    display: none !important;
+  }
+  
   .stats-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 20px;
@@ -1147,7 +1151,7 @@ body[data-theme="light"] .drone-card:hover {
   .sidebar {
     position: fixed;
     top: 0;
-    left: 0;
+    left: -220px;
     width: 220px;
     height: 100vh;
     z-index: 1041;
