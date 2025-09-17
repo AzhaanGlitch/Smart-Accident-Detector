@@ -50,7 +50,7 @@ body {
   background: var(--bg-card);
   border: none;
   border-radius: 8px;
-  display: flex;
+  display: none; /* FIX: Hide hamburger menu by default on larger screens */
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -1151,16 +1151,16 @@ body[data-theme="light"] .drone-card:hover {
   .sidebar {
     position: fixed;
     top: 0;
-    left: -220px;
+    left: 0; /* FIX: Set left to 0 for transform animation */
     width: 220px;
     height: 100vh;
     z-index: 1041;
-    transform: translateX(-100%);
+    transform: translateX(-100%); /* FIX: Hide sidebar off-screen */
     transition: transform 0.3s ease;
   }
   
   .sidebar.active {
-    transform: translateX(0);
+    transform: translateX(0); /* FIX: Bring sidebar on-screen */
   }
   
   .main-content {
