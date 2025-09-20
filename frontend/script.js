@@ -139,7 +139,7 @@ document.addEventListener('DOMContentLoaded', () => {
     fileUpload.addEventListener('change', () => {
       const file = fileUpload.files[0];
       if (file && fileNameDisplay) {
-        fileNameDisplay.textContent = `✅ File selected: ${file.name}`;
+        fileNameDisplay.textContent = `File selected: ${file.name}`;
       } else if (fileNameDisplay) {
         fileNameDisplay.textContent = '';
       }
@@ -210,7 +210,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (result.error) {
           // Show error from backend
           outcomes = {
-            'Status': '❌ Error',
+            'Status': 'Error',
             'Message': result.error,
             'Details': result.message || 'Check backend logs'
           };
@@ -220,10 +220,9 @@ document.addEventListener('DOMContentLoaded', () => {
           const bestModel = result.best_model || {};
           
           outcomes = {
-            'Accident Status': result.accident_detected ? '🚨 Accident Detected' : '✅ No Accident',
+            'Accident Status': result.accident_detected ? 'Accident Detected' : 'No Accident',
             'Final Model': `${finalModel.prediction || 'N/A'} (${Math.round(finalModel.confidence || 0)}%)`,
             'Best Model': `${bestModel.prediction || 'N/A'} (${Math.round(bestModel.confidence || 0)}%)`,
-            'Location': result.location || 'N/A'
           };
         }
 
