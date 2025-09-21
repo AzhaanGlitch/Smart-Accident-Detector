@@ -204,35 +204,71 @@ document.addEventListener('DOMContentLoaded', () => {
         // Display results from backend
         resultsGrid.innerHTML = '';
         
-        // Handle your backend's response format
+        // Handle your backend's response format - SIMPLIFIED to two boxes
         let outcomes = {};
         
         if (result.error) {
           // Show error from backend
           outcomes = {
             'Status': 'Error',
-            'Message': result.error,
-            'Details': result.message || 'Check backend logs'
+            'Message': result.error
           };
         } else {
-          // Process successful prediction results
+          // Process successful prediction results using only the final model
           const finalModel = result.final_model || {};
-          const bestModel = result.best_model || {};
           
           outcomes = {
-            'Accident Status': result.accident_detected ? 'Accident Detected' : 'No Accident',
-            'Final Model': `${finalModel.prediction || 'N/A'} (${Math.round(finalModel.confidence || 0)}%)`,
-            'Best Model': `${bestModel.prediction || 'N/A'} (${Math.round(bestModel.confidence || 0)}%)`,
+            'Prediction Result': result.accident_detected ? 'Accident Detected' : 'Safe - No Accident',
+            'Confidence Level': `${Math.round(finalModel.confidence || 0)}%`
           };
         }
 
+        // Create result cards with enhanced styling
         Object.entries(outcomes).forEach(([title, value]) => {
           const card = document.createElement('div');
           card.className = 'result-card';
-          card.innerHTML = `
-            <div class="result-title">${title}</div>
-            <div class="result-value">${value}</div>
-          `;
+          
+          // Add special styling based on content
+          if (title === 'Prediction Result') {
+            if (value.includes('Accident Detected')) {
+              card.style.borderColor = '#ef4444';
+              card.innerHTML = `
+                <div class="result-title">${title}</div>
+                <div class="result-value" style="color: #ef4444; font-size: 24px; font-weight: 800;">
+                  🚨 ${value}
+                </div>
+              `;
+            } else {
+              card.style.borderColor = '#10b981';
+              card.innerHTML = `
+                <div class="result-title">${title}</div>
+                <div class="result-value" style="color: #10b981; font-size: 24px; font-weight: 800;">
+                  ✅ ${value}
+                </div>
+              `;
+            }
+          } else if (title === 'Confidence Level') {
+            const confidence = parseInt(value);
+            let color = '#3b82f6'; // Default blue
+            if (confidence >= 80) color = '#10b981'; // Green for high confidence
+            else if (confidence >= 60) color = '#f59e0b'; // Orange for medium confidence
+            else color = '#ef4444'; // Red for low confidence
+            
+            card.style.borderColor = color;
+            card.innerHTML = `
+              <div class="result-title">${title}</div>
+              <div class="result-value" style="color: ${color}; font-size: 32px; font-weight: 800;">
+                ${value}
+              </div>
+            `;
+          } else {
+            // Error cases
+            card.innerHTML = `
+              <div class="result-title">${title}</div>
+              <div class="result-value" style="color: #ef4444;">${value}</div>
+            `;
+          }
+          
           resultsGrid.appendChild(card);
         });
 
